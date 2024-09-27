@@ -1,12 +1,23 @@
 package com.project.P1_Revshop.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+
+@Entity
 public class Customer {
+	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private int customerId;
 	private String name;
 	private long phoneNumber;
 	private String email;
 	private String password;
 	private double walletBalance;
+	@Column(columnDefinition = "TEXT")
 	private String address;
 	public Customer(int customerId, String name, long phoneNumber, String email, String password, double walletBalance,
 			String address) {

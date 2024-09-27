@@ -3,12 +3,19 @@ package com.project.P1_Revshop.model;
 import java.util.List;
 
 import jakarta.persistence.Column;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+@Entity
 public class Product {
+	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private int productId;
 	private int categoryId;
     private int sellerId;
 	private String productName;
+	@Column(columnDefinition = "TEXT")
 	private String description;
 	private double price;
 	private int stockQuantity;

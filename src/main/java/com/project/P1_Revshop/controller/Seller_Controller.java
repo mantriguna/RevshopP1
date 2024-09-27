@@ -37,6 +37,16 @@ public class Seller_Controller {
 		model.addAttribute("seller",new Seller());
 		return "Seller_Login";
 	}
+	@GetMapping("/main")
+	public String showSellerMain(Model model) {
+	    SellerDTO sellerDTO = (SellerDTO) model.asMap().get("sellerdto");
+
+	    if (sellerDTO == null) {
+	        return "redirect:/Seller/login";
+	    }
+	    model.addAttribute("sellerdto", sellerDTO);
+	   return "Seller_Main";
+	}
 	@PostMapping("/login")
     public String sellerLogin(@ModelAttribute("seller") Seller seller, Model model) {
         String email = seller.getEmail();

@@ -1,9 +1,5 @@
 package com.project.P1_Revshop.DTO;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 public class CustomerDTO {
 		private int customerId;

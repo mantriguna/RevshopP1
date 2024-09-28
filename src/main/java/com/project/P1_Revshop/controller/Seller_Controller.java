@@ -26,6 +26,10 @@ public class Seller_Controller {
 
 	@PostMapping("/register")
 	public String addNewSeller(Model model,@ModelAttribute Seller seller){
+		seller.setCurrentMonthEarning(0.0);
+		seller.setCurrentMonthItemSold(0);
+		seller.setTotalEarning(0.0);
+		seller.setTotalItemSold(0);
 		seller_service.addNewSeller(seller);
 //		List<Product> products= product_service.allproducts();
 //		model.addAttribute("products",products);
@@ -45,6 +49,7 @@ public class Seller_Controller {
 	        return "redirect:/Seller/login";
 	    }
 	    model.addAttribute("sellerdto", sellerDTO);
+	    
 	   return "Seller_Main";
 	}
 	@PostMapping("/login")

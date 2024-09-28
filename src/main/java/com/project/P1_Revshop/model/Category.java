@@ -1,31 +1,37 @@
 package com.project.P1_Revshop.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Category {
-	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private int categoryId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long categoryId;
+
     private String categoryName;
-	public Category(int categoryId, String categoryName) {
-		super();
-		this.categoryId = categoryId;
-		this.categoryName = categoryName;
-	}
-	public int getCategoryId() {
-		return categoryId;
-	}
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
-	}
-	public String getCategoryName() {
-		return categoryName;
-	}
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
-	}
+
+    // Constructor with categoryName
+    public Category(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    // Default constructor
+    public Category() {}
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 }

@@ -66,33 +66,38 @@ public class SellerProduct_Controller {
                              @RequestParam("threshold") int threshold,
                              @RequestParam("discount") Double maxDiscount,
                              @RequestParam("imageUrls") List<String> imageUrls,
-                             @RequestParam("colors") List<String> colorNames,  // Accept color names as List<String>
-                             @RequestParam("brand") Long brandId, 
+                             @RequestParam("colorNames") List<String> colorNames,  // Accept color names as List<String>
+                             @RequestParam("colorUrls") List<String> colorUrls,   // Accept color URLs as List<String>
+                             @RequestParam("brand") Long brandId,
                              @RequestParam("category") Category category,
                              @RequestParam("stockQuantity") int stockQuantity,  // Accept stock quantity
                              Model model) {
-    	System.out.println(productName+description+price+threshold+maxDiscount+imageUrls.toString()+colorNames.toString()+brandId+category+stockQuantity);
+        System.out.println(productName + description + price + threshold + maxDiscount + imageUrls.toString() + colorNames.toString() + brandId + category + stockQuantity);
+
         // Retrieve brand by ID
         Brand brand = brandService.getBrandById(brandId);
+
         // Create Product object using constructor
         Product product = new Product(
-                category, 
+                category,
                 1L,
-                productName, 
-                description, 
-                price, 
-                stockQuantity, 
-                threshold, 
-                maxDiscount, 
+                productName,
+                description,
+                price,
+                stockQuantity,
+                threshold,
+                maxDiscount,
                 brand);
 
         // Save the product first (so we can use it for image and color association)
         productService.addProduct(product);
 
-        // Save the colors
+        // Save the colors with names and URLs
         List<Color> productColors = new ArrayList<>();
-        for (String colorName : colorNames) {
-            Color color = new Color(colorName);
+        for (int i = 0; i < colorNames.size(); i++) {
+            String colorName = colorNames.get(i);
+            String colorUrl = colorUrls.get(i);  // Get corresponding color URL
+            Color color = new Color(colorName, colorUrl);  // Create Color with both name and URL
             colorService.addColor(color);  // Save to Color table
             productColors.add(color);
         }
@@ -111,6 +116,7 @@ public class SellerProduct_Controller {
 
         return "redirect:/SellerProduct/success";
     }
+
 
     @GetMapping("/brands")
     @ResponseBody  // Add this to return JSON response

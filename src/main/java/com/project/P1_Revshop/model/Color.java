@@ -8,15 +8,25 @@ public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long colorId;
-    @Column(columnDefinition = "TEXT")
+    
     private String colorName;
-
+    @Column(columnDefinition = "TEXT")
+    private String colorUrl;
     // Constructor, getters, and setters
-    public Color(String colorName) {
+    public Color(String colorName,String colorUrl) {
         this.colorName = colorName;
+        this.colorUrl=colorUrl;
     }
 
-    public Color() {}
+    public String getColorUrl() {
+		return colorUrl;
+	}
+
+	public void setColorUrl(String colorUrl) {
+		this.colorUrl = colorUrl;
+	}
+
+	public Color() {}
 
     public Long getColorId() {
         return colorId;

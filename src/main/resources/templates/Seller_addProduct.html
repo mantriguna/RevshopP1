@@ -59,26 +59,38 @@
 
         // Function to add new color input dynamically
         function addColorInput() {
-            const colorContainer = document.getElementById('colorInputs');
+        const colorContainer = document.getElementById('colorInputs');
 
-            // Create a new row for the color
-            const newRow = document.createElement('div');
-            newRow.className = 'row mb-2';
+        // Create a new row for the color name and URL
+        const newRow = document.createElement('div');
+        newRow.className = 'row mb-2';
 
-            // Create input for color
-            const colorCol = document.createElement('div');
-            colorCol.className = 'col';
-            const newColorInput = document.createElement('input');
-            newColorInput.type = 'text';
-            newColorInput.name = 'colors'; // Set name as 'colors' so it's recognized in the controller as a list
-            newColorInput.className = 'form-control';
-            newColorInput.placeholder = 'Enter Color Name';
-            newColorInput.required = true;
-            colorCol.appendChild(newColorInput);
+        // Create input for color name
+        const colorNameCol = document.createElement('div');
+        colorNameCol.className = 'col';
+        const newColorNameInput = document.createElement('input');
+        newColorNameInput.type = 'text';
+        newColorNameInput.name = 'colorNames';
+        newColorNameInput.className = 'form-control';
+        newColorNameInput.placeholder = 'Enter Color Name';
+        newColorNameInput.required = true;
+        colorNameCol.appendChild(newColorNameInput);
 
-            newRow.appendChild(colorCol);
-            colorContainer.appendChild(newRow);
-        }
+        // Create input for color URL
+        const colorUrlCol = document.createElement('div');
+        colorUrlCol.className = 'col';
+        const newColorUrlInput = document.createElement('input');
+        newColorUrlInput.type = 'url';
+        newColorUrlInput.name = 'colorUrls';
+        newColorUrlInput.className = 'form-control';
+        newColorUrlInput.placeholder = 'Enter Color URL';
+        newColorUrlInput.required = true;
+        colorUrlCol.appendChild(newColorUrlInput);
+
+        newRow.appendChild(colorNameCol);
+        newRow.appendChild(colorUrlCol);
+        colorContainer.appendChild(newRow);
+    }
     </script>
 </head>
 <body>
@@ -125,15 +137,16 @@
 			    <label for="colors" class="form-label">Color <span class="text-danger">*</span></label>
 			    <div class="row mb-2">
 			        <div class="col">
-			            <input type="text" class="form-control" name="colors" placeholder="Enter Color URL" required>
-			            <small class="form-text text-muted">Add multiple URLs by clicking "Add Another Color URL".</small>
+			            <input type="text" class="form-control" name="colorNames" placeholder="Enter Color Name" required>
+			        </div>
+			        <div class="col">
+			            <input type="url" class="form-control" name="colorUrls" placeholder="Enter Color URL" required>
 			        </div>
 			    </div>
 			</div>
-			<!-- Button to Add More Colors -->
 			<button type="button" class="btn btn-secondary mt-2" onclick="addColorInput()">Add Another Color</button>
-			            
-
+	
+	     
             <!-- Image URLs Section -->
             <div id="imageUrlInputs" class="mb-3">
                 <label for="imageUrls" class="form-label">Image URLs <span class="text-danger">*</span></label>

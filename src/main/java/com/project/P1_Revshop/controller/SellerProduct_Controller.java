@@ -24,6 +24,8 @@ import com.project.P1_Revshop.service.Category_Service;
 import com.project.P1_Revshop.service.Color_Service;
 import com.project.P1_Revshop.service.Product_Service;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/SellerProduct")
 public class SellerProduct_Controller {
@@ -60,7 +62,7 @@ public class SellerProduct_Controller {
     }
 
     @PostMapping("/addProduct")
-    public String addProduct(@RequestParam("productName") String productName,
+    public String addProduct(HttpSession session,@RequestParam("productName") String productName,
                              @RequestParam("description") String description,
                              @RequestParam("price") double price,
                              @RequestParam("threshold") int threshold,
@@ -72,15 +74,14 @@ public class SellerProduct_Controller {
                              @RequestParam("category") Category category,
                              @RequestParam("stockQuantity") int stockQuantity,  // Accept stock quantity
                              Model model) {
-        System.out.println(productName + description + price + threshold + maxDiscount + imageUrls.toString() + colorNames.toString() + brandId + category + stockQuantity);
-
+    	 Long sellerId = (Long) session.getAttribute("sellerId");
         // Retrieve brand by ID
         Brand brand = brandService.getBrandById(brandId);
 
         // Create Product object using constructor
         Product product = new Product(
                 category,
-                1L,
+                sellerId,
                 productName,
                 description,
                 price,
@@ -114,7 +115,8 @@ public class SellerProduct_Controller {
         // Finally save everything with the updated associations
         productService.addProduct(product);
 
-        return "redirect:/SellerProduct/success";
+        //return "redirect:/SellerProduct/success";
+        return "redirect:/Seller/main";
     }
 
 

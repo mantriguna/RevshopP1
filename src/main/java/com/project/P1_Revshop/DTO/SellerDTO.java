@@ -1,9 +1,11 @@
 package com.project.P1_Revshop.DTO;
 
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 
-public class SellerDTO {
+public class SellerDTO implements Serializable{
 	private Long sellerId;
 	private String name;
 	private Long personalPhoneNumber;

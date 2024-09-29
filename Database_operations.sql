@@ -37,6 +37,20 @@ INSERT INTO brand (brand_name, category_id) VALUES ("Bose", 4);
 
 select * from product;
 select * from brand;
+select * from color;
+select * from product_image;
+-- 1
+INSERT INTO product (product_name, description, price, stock_quantity, threshold, max_discount, brand_id, category_id, seller_id) 
+VALUES ('Awesome T-shirt', 'A cool t-shirt with multiple colors', 20.99, 100, 10, 15.00, 2, 3, 1);
+INSERT INTO color (color_name, color_url, product_id) 
+VALUES 
+    ('Red', 'https://example.com/red.jpg', 1),
+    ('Green', 'https://example.com/green.jpg', 1),
+    ('Blue', 'https://example.com/blue.jpg', 1);
+INSERT INTO productimage (image_url, category_id, product_id) 
+VALUES 
+    ('https://example.com/image1.jpg', 3, 1),
+    ('https://example.com/image2.jpg', 3, 1);
 
 
 drop database RevshopP1ProjectDevelopementDatabase;

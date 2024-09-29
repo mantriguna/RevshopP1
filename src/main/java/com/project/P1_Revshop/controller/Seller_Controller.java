@@ -46,66 +46,59 @@ public class Seller_Controller {
 		return "Seller_Login";
 	}
 	@GetMapping("/main")
-	public String showSellerMain(Model model) {
-	    SellerDTO sellerDTO = (SellerDTO) model.asMap().get("sellerdto");
+	public String showSellerMain(Model model, HttpSession session) {
+	    Long sellerId = (Long) session.getAttribute("sellerId");
+
+	    if (sellerId == null) {
+	        return "redirect:/Seller/login";  // Redirect to login if sellerId is not found in session
+	    }
+
+	    SellerDTO sellerDTO = seller_service.getSellerBySellerId(sellerId);
 
 	    if (sellerDTO == null) {
-	        return "redirect:/Seller/login";
+	        return "redirect:/Seller/login";  // Redirect to login if no sellerDTO found
 	    }
+
 	    model.addAttribute("sellerdto", sellerDTO);
-	    
-	   return "Seller_Main";
+
+	    return "Seller_Main"; // Render the Seller_Main view with sellerDTO
 	}
+
 	@PostMapping("/login")
-    public String sellerLogin(@ModelAttribute("seller") Seller seller, Model model) {
-        String email = seller.getEmail();
-        String password = seller.getPassword();
+	public String sellerLogin(@ModelAttribute("seller") Seller seller, Model model, HttpSession session) {
+	    String email = seller.getEmail();
+	    String password = seller.getPassword();
 
-        Seller existingSeller = seller_service.getSellerByEmail(email);
+	    Seller existingSeller = seller_service.getSellerByEmail(email);
 
-        if (existingSeller == null) {
-            model.addAttribute("error", "Email does not exist! Please check your email.");
-            return "Seller_Login"; // Return to the login page with error
-        } else {
-            String storedPassword = existingSeller.getPassword();
-            if (!storedPassword.equals(password)) {
-                model.addAttribute("error", "Wrong password!");
-                return "Seller_Login"; // Return to the login page with error
-            } else {
-                // Create Seller_DTO and add it to the session
-            	/*
-            	 * 		this.sellerId = sellerId;
-		this.name = name;
-		this.personalPhoneNumber = personalPhoneNumber;
-		this.email = email;
-		this.homeAddress = homeAddress;
-		this.panNumber = panNumber;
-		this.businessAddress = businessAddress;
-		this.businessPhoneNumber = businessPhoneNumber;
-		this.totalEarning = totalEarning;
-		this.totalItemSold = totalItemSold;
-		this.currentMonthEarning = currentMonthEarning;
-		this.currentMonthItemSold*/
-                SellerDTO sellerDTO = new SellerDTO(
-                    existingSeller.getSellerId(),
-                    existingSeller.getName(),
-                    existingSeller.getPersonalPhoneNumber(),
-                    existingSeller.getEmail(),
-                    existingSeller.getHomeAddress(),
-                    existingSeller.getPanNumber(),
-                    existingSeller.getBusinessAddress(),
-                    existingSeller.getBusinessPhoneNumber(),
-                    existingSeller.getTotalEarning(),
-                    existingSeller.getTotalItemSold(),
-                    existingSeller.getCurrentMonthEarning(),
-                    existingSeller.getCurrentMonthItemSold()
-                );
-                model.addAttribute("sellerdto", sellerDTO);
-                
-//                SessionFactory session;
-//                session.c
-                return "Seller_Main";
-            }
-        }
-    }
+	    if (existingSeller == null) {
+	        model.addAttribute("error", "Email does not exist! Please check your email.");
+	        return "Seller_Login"; // Return to the login page with error
+	    } else {
+	        String storedPassword = existingSeller.getPassword();
+	        if (!storedPassword.equals(password)) {
+	            model.addAttribute("error", "Wrong password!");
+	            return "Seller_Login"; // Return to the login page with error
+	        } else {
+	            SellerDTO sellerDTO = new SellerDTO(
+	                existingSeller.getSellerId(),
+	                existingSeller.getName(),
+	                existingSeller.getPersonalPhoneNumber(),
+	                existingSeller.getEmail(),
+	                existingSeller.getHomeAddress(),
+	                existingSeller.getPanNumber(),
+	                existingSeller.getBusinessAddress(),
+	                existingSeller.getBusinessPhoneNumber(),
+	                existingSeller.getTotalEarning(),
+	                existingSeller.getTotalItemSold(),
+	                existingSeller.getCurrentMonthEarning(),
+	                existingSeller.getCurrentMonthItemSold()
+	            );
+	            model.addAttribute("sellerdto", sellerDTO);
+	            session.setAttribute("sellerId", sellerDTO.getSellerId()); // Set sellerId in session
+	            return "Seller_Main"; // Return to Seller_Main after successful login
+	        }
+	    }
+	}
+
 }

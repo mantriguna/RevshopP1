@@ -42,10 +42,10 @@
         }
 
         .title-image {
-            width: 1cm; /* Set width to 1cm */
-            height: 1cm; /* Set height to 1cm */
-            margin: 0; /* No margin */
-            border: 2px solid #FFFFFF; /* Optional border for styling */
+            width: 1cm;
+            height: 1cm;
+            margin: 0;
+            border: 2px solid #FFFFFF;
         }
 
         .title {
@@ -53,7 +53,7 @@
             font-weight: bold;
             color: #FFFFFF;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            margin-left: 10px; /* Space between image and text */
+            margin-left: 10px;
         }
 
         .container {
@@ -66,7 +66,7 @@
         }
 
         .login-box {
-            background-color: rgba(255, 255, 255, 0.85); /* Slightly reduced brightness */
+            background-color: rgba(255, 255, 255, 0.85);
             padding: 40px;
             border-radius: 10px;
             width: 35%;
@@ -105,7 +105,7 @@
 
         .input-box {
             position: relative;
-            margin-bottom: 10px; /* Added space between boxes */
+            margin-bottom: 10px;
         }
 
         .input-box input {
@@ -143,7 +143,7 @@
             color: red;
             font-size: 12px;
             margin-top: 5px;
-            display: none; /* Hidden by default */
+            display: none;
         }
 
         .eye-toggle {
@@ -260,7 +260,7 @@
                 <img src="https://static.vecteezy.com/system/resources/previews/020/526/176/original/3d-user-login-or-verification-icon-human-symbol-mobile-ui-ux-app-icons-vector.jpg" alt="Profile">
             </div>
             <h2>Business Login </h2>
-            <form action="#" class="form-grid" onsubmit="validateForm(event)">
+            <form action="BuyerDashboard" class="form-grid" onsubmit="validateForm(event)">
                 <div class="input-box">
                     <input type="text" id="email" required oninput="validateEmail()">
                     <label>Email</label>
@@ -279,6 +279,7 @@
                 <div class="button-box">
                     <button type="submit">Sign in</button>
                 </div>
+                <a href="BuyerDashboard" class="signup-link">SignUp</a>
             </form>
             <div class="signup-prompt">
                 <p>Don't have an account? <a href="#">Sign Up</a></p>

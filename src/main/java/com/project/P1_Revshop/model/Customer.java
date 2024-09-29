@@ -16,18 +16,28 @@ public class Customer {
 	private String email;
 	private String password;
 	private double walletBalance;
+	public double getWalletBalance() {
+		return walletBalance;
+	}
+	public void setWalletBalance(double walletBalance) {
+		this.walletBalance = walletBalance;
+	}
 	@Column(columnDefinition = "TEXT")
 	private String address;
-	public Customer(int customerId, String name, long phoneNumber, String email, String password, double walletBalance,
-			String address) {
+	public Customer(int customerId, String name, long phoneNumber, String email, String password,
+			String address,double walletBalance) {
 		super();
 		this.customerId = customerId;
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.password = password;
-		this.walletBalance = walletBalance;
 		this.address = address;
+		this.walletBalance=walletBalance;
+	}
+	public Customer()
+	{
+		
 	}
 	public int getCustomerId() {
 		return customerId;
@@ -58,12 +68,6 @@ public class Customer {
 	}
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	public double getWalletBalance() {
-		return walletBalance;
-	}
-	public void setWalletBalance(double walletBalance) {
-		this.walletBalance = walletBalance;
 	}
 	public String getAddress() {
 		return address;

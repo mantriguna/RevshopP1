@@ -1,5 +1,6 @@
 package com.project.P1_Revshop.controller;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.project.P1_Revshop.DTO.SellerDTO;
 import com.project.P1_Revshop.model.Seller;
 import com.project.P1_Revshop.service.Seller_Service;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 
 @Controller
@@ -97,6 +101,9 @@ public class Seller_Controller {
                     existingSeller.getCurrentMonthItemSold()
                 );
                 model.addAttribute("sellerdto", sellerDTO);
+                
+//                SessionFactory session;
+//                session.c
                 return "Seller_Main";
             }
         }

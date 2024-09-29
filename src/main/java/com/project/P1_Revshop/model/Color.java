@@ -8,7 +8,7 @@ public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long colorId;
-
+    @Column(columnDefinition = "TEXT")
     private String colorName;
 
     // Constructor, getters, and setters

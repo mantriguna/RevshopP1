@@ -1,7 +1,8 @@
 package com.project.P1_Revshop.DTO;
 
+import java.io.Serializable;
 
-public class CustomerDTO {
+public class CustomerDTO implements Serializable {
 		private int customerId;
 		private String name;
 		private long phoneNumber;

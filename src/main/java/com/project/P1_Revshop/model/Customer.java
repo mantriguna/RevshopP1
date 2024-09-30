@@ -29,6 +29,10 @@ public class Customer {
 		this.walletBalance = walletBalance;
 		this.address = address;
 	}
+	public Customer() {
+		
+	}
+	
 	public int getCustomerId() {
 		return customerId;
 	}

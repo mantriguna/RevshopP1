@@ -1,0 +1,137 @@
+<style>
+body {
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.navbar-nav {
+    display: flex;
+    justify-content: space-around; /* Spread items evenly with equal space */
+    align-items: center; /* Vertically center the items */
+    flex-direction: column; /* Align items in a column */
+    width: 100%; /* Ensure the navbar takes full width */
+}
+
+.navbar-nav .nav-link {
+    color: white;
+    text-align: center; /* Center text within the link */
+    width: 100%; /* Make each nav link fill the column width */
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffc107;
+}
+
+/* Dropdown styles */
+.nav-item .dropdown-menu {
+    background-color: #343a40;
+    border: none;
+    min-width: 180px;
+    text-align: left; /* Align dropdown text to the left */
+}
+
+.dropdown-menu .dropdown-item {
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #ffc107;
+    color: black;
+}
+
+/* Profile Icon Styles */
+.profile-icon {
+    width: 30px; /* Set icon width */
+    height: 30px; /* Set icon height */
+    border-radius: 50%; /* Make the icon circular */
+}
+
+/* Flexbox spacing for dropdown items */
+.navbar-nav .nav-item {
+    position: relative;
+    width: 100%; /* Make sure each nav-item takes full width */
+    display: flex;
+    justify-content: center; /* Center nav-items */
+    align-items: center; /* Center items vertically */
+    margin-bottom: 10px; /* Add space between each nav-item */
+}
+
+.nav-item:hover .dropdown-menu {
+    display: block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Center dropdown below the item */
+    top: 100%;
+    z-index: 1;
+}
+
+/* Transition effects for dropdown */
+.navbar-nav .dropdown-menu {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.nav-item:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+}
+
+/* Ensures dropdown stays within screen */
+.navbar-nav .dropdown-menu {
+    transform: translateX(-50%);
+}
+
+</style>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/Seller/main}">Dashboard</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown" style="margin: 0 33px 0 35px;">
+                    <a class="nav-link dropdown-toggle" href="#" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">News & Guidelines</a>
+                    <ul class="dropdown-menu" aria-labelledby="newsDropdown">
+                        <li><a class="dropdown-item" th:href="@{/JSP/ErrorPage}">News</a></li>
+                        <li><a class="dropdown-item" th:href="@{/JSP/ErrorPage}">Guideline</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item" style="margin: 0 28px;">
+                    <a class="nav-link" th:href="@{/SellerProduct/addProduct}">Add Products</a>
+                </li>
+                <li class="nav-item" style="margin: 0 28px;">
+                    <a class="nav-link" th:href="@{/SellerProduct/showproducts}">My Products</a>
+                </li>
+                <li class="nav-item dropdown" style="margin: 0 28px;">
+                    <a class="nav-link dropdown-toggle" href="#" id="ordersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Orders</a>
+                    <ul class="dropdown-menu" aria-labelledby="ordersDropdown">
+                        <li><a class="dropdown-item" th:href="@{/SellerReceivedOrder}">Received</a></li>
+                        <li><a class="dropdown-item" th:href="@{/JSP/SellerSuccessfulOrders.jsp}">Completed Orders</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown" style="margin: 0 28px;">
+                    <a class="nav-link dropdown-toggle" href="#" id="helpDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Help</a>
+                    <ul class="dropdown-menu" aria-labelledby="helpDropdown">
+                        <li><a class="dropdown-item" th:href="@{/JSP/ErrorPage.jsp}">Chat Bot</a></li>
+                        <li><a class="dropdown-item" th:href="@{/JSP/ErrorPage.jsp}">Technical Support</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown" style="margin: 0 15px;">
+                    <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="../Images/Profile-icon.png" alt="Profile" class="profile-icon">
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" th:href="@{/Seller/}">Update Profile</a></li>
+                        <li><a class="dropdown-item" th:href="@{/Seller/login}">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

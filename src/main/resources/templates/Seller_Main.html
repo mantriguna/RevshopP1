@@ -136,59 +136,7 @@
 
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/Seller/main}">Dashboard</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item dropdown" style="margin: 0 33px 0 35px;">
-                    <a class="nav-link dropdown-toggle" href="#" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        News & Guidelines
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="newsDropdown">
-                        <li><a class="dropdown-item" th:href="@{/JSP/ErrorPage}">News</a></li>
-                        <li><a class="dropdown-item" th:href="@{/JSP/ErrorPage}">Guideline</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item" style="margin: 0 28px;">
-                    <a class="nav-link" th:href="@{/SellerProduct/addProduct}">Add Products</a>
-                </li>
-                <li class="nav-item" style="margin: 0 28px;">
-                    <a class="nav-link" th:href="@{/SellerShowProducts}">My Products</a>
-                </li>
-                <li class="nav-item dropdown" style="margin: 0 28px;">
-                    <a class="nav-link dropdown-toggle" href="#" id="ordersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Orders</a>
-                    <ul class="dropdown-menu" aria-labelledby="ordersDropdown">
-                        <li><a class="dropdown-item" th:href="@{/SellerReceivedOrder}">Received</a></li>
-                        <li><a class="dropdown-item" th:href="@{/JSP/SellerSuccessfulOrders.jsp}">Completed Orders</a></li>
-                    </ul>
-                </li>
-                
-                <li class="nav-item dropdown" style="margin: 0 28px;">
-                    <a class="nav-link dropdown-toggle" href="#" id="helpDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Help
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="helpDropdown">
-                        <li><a class="dropdown-item" th:href="@{/JSP/ErrorPage.jsp}">Chat Bot</a></li>
-                        <li><a class="dropdown-item" th:href="@{/JSP/ErrorPage.jsp}">Technical Support</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown" style="margin: 0 15px;">
-                    <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="../Images/Profile-icon.png" alt="Profile" class="profile-icon">
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                        <li><a class="dropdown-item" th:href="@{/Seller/}">Update Profile</a></li>
-                        <li><a class="dropdown-item" th:href="@{/Seller/login}">Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<div th:insert="~{Seller_navbar.html}"></div>
 <!-- nav bar completed here -->
 <section class="details-section container">
     <div class="header-container" style="margin:20px;">

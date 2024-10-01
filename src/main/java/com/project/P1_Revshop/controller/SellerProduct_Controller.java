@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.P1_Revshop.DTO.SellerDTO;
 import com.project.P1_Revshop.model.Brand;
@@ -25,6 +28,7 @@ import com.project.P1_Revshop.service.Color_Service;
 import com.project.P1_Revshop.service.Product_Service;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
 
 @Controller
 @RequestMapping("/SellerProduct")
@@ -40,7 +44,58 @@ public class SellerProduct_Controller {
 
     @Autowired
     private Brand_Service brandService;
+    
+//    @GetMapping("/editProduct/{productId}")
+//    public String showEditProductForm(HttpSession session,@PathVariable Long productId, Model model) {
+//        Product product = productService.findProductById(productId);
+//        
+//        List<Category> categories = categoryService.getAllCategories();
+//        Long sellerId = (Long) session.getAttribute("sellerId");
+//        model.addAttribute("sellerId", sellerId);
+//        model.addAttribute("product", product);
+//        model.addAttribute("categories", categories);
+//        return "Seller_UpdateProduct"; // Thymeleaf template name
+//    }
+    @GetMapping("/editProduct/{productId}")
+    public String showEditProductForm(HttpSession session,@PathVariable("productId") Long productId, Model model) {
+    	Long sellerId = (Long) session.getAttribute("sellerId");
+        Product product = productService.findById(productId);
+        model.addAttribute("product", product);
+        model.addAttribute("categories", productService.findAllCategories()); // Fetch categories
+        model.addAttribute("brands", productService.findBrandsByCategory(product.getCategory().getCategoryId())); // Fetch brands based on category
+        return "Seller_UpdateProduct"; // Thymeleaf template name
+    }
 
+    // Handle the submission of the updated product
+    @PostMapping("/updateProduct")
+    public String updateProduct(@ModelAttribute Product product, RedirectAttributes redirectAttributes) {
+        productService.updateProduct(product);
+        redirectAttributes.addFlashAttribute("message", "Product updated successfully!");
+        return "redirect:/SellerProduct/showproducts"; // Redirect to product list or another page
+    }
+
+    @DeleteMapping("/delete/{productId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@PathVariable Long productId) {
+        productService.deleteProduct(productId);
+    }
+    @GetMapping("/showproducts")
+    public String showSellerProducts(HttpSession session, Model model) {
+        // Retrieve seller information from the session
+        Long sellerid = (Long) session.getAttribute("sellerId");
+        if (sellerid == null) {
+            return "redirect:/Seller/login";  // Redirect to login if seller not found in session
+        }
+
+        // Get the list of products for the seller
+        List<Product> productList = productService.findProductsBySellerId(sellerid);
+        
+        // Add the list of products to the model
+        model.addAttribute("productList", productList);
+
+        // Return the Thymeleaf template for displaying seller products
+        return "SellerShowProducts";  // This should match your Thymeleaf template name
+    }
     @GetMapping("/addProduct")
     public String showAddProductForm(Model model) {
 

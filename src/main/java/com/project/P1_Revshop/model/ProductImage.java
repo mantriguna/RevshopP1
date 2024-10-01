@@ -62,4 +62,5 @@ public class ProductImage {
     public void setProduct(Product product) {
         this.product = product;
     }
+
 }

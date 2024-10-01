@@ -12,6 +12,9 @@ public class Color {
     private String colorName;
     @Column(columnDefinition = "TEXT")
     private String colorUrl;
+    @ManyToOne // Add this line to establish a relationship with Product
+    @JoinColumn(name = "productId") // Foreign key column
+    private Product product;
     // Constructor, getters, and setters
     public Color(String colorName,String colorUrl) {
         this.colorName = colorName;
@@ -42,5 +45,12 @@ public class Color {
 
     public void setColorName(String colorName) {
         this.colorName = colorName;
+    }
+    public Product getProduct() {
+        return product; // Getter for Product
+    }
+
+    public void setProduct(Product product) { // Setter for Product
+        this.product = product;
     }
 }

@@ -1,7 +1,15 @@
 package com.project.P1_Revshop.model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
+/*
+hello_world
+helloWorld()
+HelloWorld
+HELLO_WORLD
+*/
 
 @Entity
 public class Product {
@@ -15,6 +23,7 @@ public class Product {
     private Category category;  // Foreign key reference to Category entity
 
     private Long sellerId;
+
     @ManyToOne
     @JoinColumn(name = "brandId", nullable = false)
     private Brand brand;
@@ -26,8 +35,10 @@ public class Product {
     private double price;
     private int stockQuantity;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductImage> imageUrls;  // List of ProductImage objects
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductImage> imageUrls=new ArrayList<>();
+
+;  // List of ProductImage objects
 
     @OneToMany
     @JoinColumn(name = "productId")
@@ -35,11 +46,10 @@ public class Product {
 
     private int threshold;
     private Double maxDiscount;
-    // Constructor
-    public Product( Category category, Long sellerId, String productName, String description,
-                   double price, int stockQuantity,
-                   int threshold, Double maxDiscount,Brand brand) {
 
+    // Constructor
+    public Product(Category category, Long sellerId, String productName, String description,
+                   double price, int stockQuantity, int threshold, Double maxDiscount, Brand brand) {
         this.category = category;
         this.sellerId = sellerId;
         this.productName = productName;
@@ -48,7 +58,7 @@ public class Product {
         this.stockQuantity = stockQuantity;
         this.threshold = threshold;
         this.maxDiscount = maxDiscount;
-        this.brand=brand;
+        this.brand = brand;
     }
 
     // Default constructor
@@ -142,6 +152,7 @@ public class Product {
     public void setMaxDiscount(Double maxDiscount) {
         this.maxDiscount = maxDiscount;
     }
+
     public Brand getBrand() {
         return brand;
     }
@@ -149,4 +160,5 @@ public class Product {
     public void setBrand(Brand brand) {
         this.brand = brand;
     }
+
 }

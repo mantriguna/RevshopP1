@@ -1,6 +1,7 @@
 package com.project.P1_Revshop.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,15 @@ public class Brand_Service {
         return brandRepository.findAll(); // Fetch all brands
     }
 
-    public Brand getBrandById(Long brandId) {
-        return brandRepository.findById(brandId).orElse(null); // Fetch brand by ID
-    }
+//    public Brand getBrandById(Long brandId) {
+//        return brandRepository.findById(brandId).orElse(null); // Fetch brand by ID
+//    }
 
     public List<Brand> getBrandsByCategoryId(Long categoryId) {
         return brandRepository.findByCategory_CategoryId(categoryId);
+    }
+    public Brand getBrandById(Long brandId) {
+        Optional<Brand> brandOptional = brandRepository.findById(brandId);
+        return brandOptional.orElse(null); // Handle case when brand is not found
     }
 }

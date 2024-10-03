@@ -1,6 +1,7 @@
 package com.project.P1_Revshop.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,16 +32,18 @@ public class Product_Service {
     @Autowired
     private Color_Repository colorRepository;
     
-    @Autowired
-    private Brand_Repository brandRepository;
-    
-    @Autowired
-    private Category_Repository categoryRepository;
     
     public void addProduct(Product product) {
         productRepository.save(product);
     }
+    
+    public Product findProductById(Long productId) {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        return productOptional.orElse(null); // Handle case when product is not found
+    }
 
+
+    
     public List<Product> findProductsBySellerId(Long sellerId) {
         List<Product> products = productRepository.findAllBySellerId(sellerId);
         for (Product product : products) {
@@ -60,26 +63,15 @@ public class Product_Service {
         // Finally, delete the product
         productRepository.deleteById(productId);
     }
+    
 
-    public Product findProductById(Long productId) {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-    }
 
     public Product findById(Long productId) {
         return productRepository.findById(productId).orElse(null); // Fetch product by ID
     }
 
+
     public void updateProduct(Product product) {
-        // Update logic here
-        productRepository.save(product); // Save the updated product
-    }
-
-    public List<Category> findAllCategories() {
-        return categoryRepository.findAll(); // Fetch all categories
-    }
-
-    public List<Brand> findBrandsByCategory(Long categoryId) {
-        return brandRepository.findBrandsByCategory(categoryId); // Fetch brands based on category ID
+        productRepository.save(product);
     }
 }

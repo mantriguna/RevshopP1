@@ -18,7 +18,9 @@ public class ProductImage {
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)  // Reference to Product entity
     private Product product;  // Back reference to Product entity
-
+    public ProductImage(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
     // Constructor with product reference
     public ProductImage(String imageUrl, Category category, Product product) {
         this.imageUrl = imageUrl;

@@ -2,9 +2,12 @@ package com.project.P1_Revshop.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,10 +28,12 @@ import com.project.P1_Revshop.model.ProductImage;
 import com.project.P1_Revshop.service.Brand_Service;
 import com.project.P1_Revshop.service.Category_Service;
 import com.project.P1_Revshop.service.Color_Service;
+import com.project.P1_Revshop.service.ProductImage_Service;
 import com.project.P1_Revshop.service.Product_Service;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @Controller
 @RequestMapping("/SellerProduct")
@@ -45,40 +50,160 @@ public class SellerProduct_Controller {
     @Autowired
     private Brand_Service brandService;
     
-//    @GetMapping("/editProduct/{productId}")
-//    public String showEditProductForm(HttpSession session,@PathVariable Long productId, Model model) {
-//        Product product = productService.findProductById(productId);
-//        
-//        List<Category> categories = categoryService.getAllCategories();
-//        Long sellerId = (Long) session.getAttribute("sellerId");
-//        model.addAttribute("sellerId", sellerId);
-//        model.addAttribute("product", product);
-//        model.addAttribute("categories", categories);
-//        return "Seller_UpdateProduct"; // Thymeleaf template name
-//    }
+    @Autowired
+    private ProductImage_Service productImageService;
+    
     @GetMapping("/editProduct/{productId}")
     public String showEditProductForm(HttpSession session,@PathVariable("productId") Long productId, Model model) {
     	Long sellerId = (Long) session.getAttribute("sellerId");
         Product product = productService.findById(productId);
         model.addAttribute("product", product);
-        model.addAttribute("categories", productService.findAllCategories()); // Fetch categories
-        model.addAttribute("brands", productService.findBrandsByCategory(product.getCategory().getCategoryId())); // Fetch brands based on category
+        model.addAttribute("categories", categoryService. getAllCategories()); // Fetch categories
+        model.addAttribute("brands", brandService.getBrandsByCategoryId(product.getCategory().getCategoryId())); // Fetch brands based on category
         return "Seller_UpdateProduct"; // Thymeleaf template name
     }
-
-    // Handle the submission of the updated product
+    
+    
+    
+    
     @PostMapping("/updateProduct")
-    public String updateProduct(@ModelAttribute Product product, RedirectAttributes redirectAttributes) {
+    public String updateProduct(
+            @RequestParam("productId") Long productId,
+            @RequestParam("productName") String productName,
+            @RequestParam("description") String description,
+            @RequestParam("price") double price,
+            @RequestParam("threshold") int threshold,
+            @RequestParam("maxDiscount") Double maxDiscount,
+            @RequestParam("stockQuantity") int stockQuantity,
+            @RequestParam(value = "colorNames") List<String> colorNames,
+            @RequestParam(value = "colorUrls") List<String> colorUrls,
+            @RequestParam(value = "imageUrls") List<String> imageUrls,
+            @RequestParam("categoryId") Long categoryId,
+            @RequestParam("brandId") Long brandId,
+            Model model) {
+
+        // Retrieve the existing product from the database
+        Product product = productService.findProductById(productId);
+
+        // Update the product fields
+        product.setProductName(productName);
+        product.setDescription(description);
+        product.setPrice(price);
+        product.setThreshold(threshold);
+        product.setMaxDiscount(maxDiscount);
+        product.setStockQuantity(stockQuantity);
+
+        // Retrieve the category and brand from the database
+        Category category = categoryService.findCategoryById(categoryId);
+        product.setCategory(category);
+        product.setBrand(brandService.getBrandById(brandId));
+
+        // Update the product colors
+        List<Color> existingColors = colorService.findColorsByProductId(productId);
+        List<Color> updatedColors = new ArrayList<>();
+
+        // Update existing colors or add new colors
+        for (int i = 0; i < colorNames.size(); i++) {
+            String colorName = colorNames.get(i);
+            String colorUrl = colorUrls.get(i);
+
+            // Check if the color exists
+            if (i < existingColors.size()) {
+                Color color = existingColors.get(i);
+                color.setColorName(colorName);
+                color.setColorUrl(colorUrl);
+                color.setProduct(product);
+                colorService.updateColor(color); // Update existing color
+                updatedColors.add(color);
+            } else {
+                // Create new color if there's an extra one
+                Color newColor = new Color(colorName, colorUrl);
+                newColor.setProduct(product);
+                colorService.addColor(newColor);
+                updatedColors.add(newColor);
+            }
+        }
+
+        product.setColors(updatedColors); // Associate updated colors with the product
+
+        // Delete colors that are not present in the form submission
+        for (int i = colorNames.size(); i < existingColors.size(); i++) {
+            Color colorToDelete = existingColors.get(i);
+            colorService.deleteColor(colorToDelete.getColorId());
+        }
+
+        // Update the product images
+        List<ProductImage> existingImages = productImageService.findImagesByProductId(productId);
+        List<ProductImage> updatedImages = new ArrayList<>();
+
+        // Update existing images or add new images
+        for (int i = 0; i < imageUrls.size(); i++) {
+            String imageUrl = imageUrls.get(i);
+
+            if (i < existingImages.size()) {
+                // Update existing image
+                ProductImage image = existingImages.get(i);
+                image.setImageUrl(imageUrl);
+                productImageService.updateProductImage(image); // Update existing image
+                updatedImages.add(image);
+            } else {
+                // Create new image if there's an extra one
+                ProductImage newImage = new ProductImage(imageUrl, category, product);
+                productImageService.addProductImage(newImage);
+                updatedImages.add(newImage);
+            }
+        }
+
+        product.setImageUrls(updatedImages); // Associate updated images with the product
+
+        // Delete images that are not present in the form submission
+        for (int i = imageUrls.size(); i < existingImages.size(); i++) {
+            ProductImage imageToDelete = existingImages.get(i);
+            productImageService.deleteProductImage(imageToDelete.getImageId());
+        }
+
+        // Save the updated product
         productService.updateProduct(product);
-        redirectAttributes.addFlashAttribute("message", "Product updated successfully!");
-        return "redirect:/SellerProduct/showproducts"; // Redirect to product list or another page
+
+        // Redirect after successful update
+        return "redirect:/SellerProduct/showproducts";
     }
 
+    @DeleteMapping("/deleteColor/{colorId}")
+    @ResponseBody
+    public ResponseEntity<?> deleteColor(@PathVariable Long colorId) {
+        colorService.deleteColor(colorId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/deleteImage/{imageId}")
+    @ResponseBody
+    public ResponseEntity<?> deleteImage(@PathVariable Long imageId) {
+        productImageService.deleteProductImage(imageId);
+        return ResponseEntity.ok().build();
+    }
+
+
+    
+    
+
+
+
+
+
+
+
+    //deleting
+    
     @DeleteMapping("/delete/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProduct(@PathVariable Long productId) {
         productService.deleteProduct(productId);
     }
+    
+    //showing
+    
+    
     @GetMapping("/showproducts")
     public String showSellerProducts(HttpSession session, Model model) {
         // Retrieve seller information from the session
@@ -96,6 +221,9 @@ public class SellerProduct_Controller {
         // Return the Thymeleaf template for displaying seller products
         return "SellerShowProducts";  // This should match your Thymeleaf template name
     }
+    
+    //adding 
+    
     @GetMapping("/addProduct")
     public String showAddProductForm(Model model) {
 

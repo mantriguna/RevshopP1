@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Registration Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh; /* Height of the viewport */
+            overflow: hidden;
+            background-color: #FFFFFF;
+        }
+
+        .video-container {
+            position: relative;
+            width: 50%;
+            height: 100vh; /* Full height of the viewport */
+            background-color: #000000;
+            border: 1px solid #FE5005; /* Add border to video container */
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Maintain aspect ratio while covering the area */
+            border: none;
+        }
+
+        .title-container {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    z-index: 3;
+    display: flex;
+    align-items: center; /* Ensures both elements are vertically aligned */
+}
+
+.title-image {
+    width: 1cm;
+    height: 1cm;
+    margin: 0;
+    border: 1px solid #FFFFFF;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-left: 10px; /* Space between the logo and the title */
+    display: inline-block; /* Ensure title stays in line */
+}
+
+
+        .ecommerce-text {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #FFFFFF;
+            font-size: 18px;
+            width: 90%;
+        }
+
+        .container {
+            position: relative;
+            background-color: #FFFFFF;
+            padding: 20px;
+            width: 50%; /* Decreased width */
+            height: auto; 
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+
+        .form-group {
+            margin-bottom: 10px; /* Reduced margin */
+        }
+
+        label {
+            display: block;
+            font-size: 14px; /* Decreased size */
+            color: #000000;
+            margin-bottom: 5px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px; /* Reduced padding */
+            border: 2px solid #000000;
+            border-radius: 5px;
+            font-size: 14px; /* Decreased size */
+            outline: none;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #FE5005;
+        }
+
+        .button-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 10px 15px; /* Reduced padding */
+            background-color: #FE5005;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px; /* Decreased size */
+        }
+
+        button:hover {
+            background-color: #E04A04;
+        }
+
+        .signup-link {
+            color: #FE5005;
+            text-decoration: none;
+            font-size: 12px; /* Decreased size */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="video-container">
+        <div class="title-container">
+            <img src="images/RevShop.png" alt="RevShop Logo" class="title-image">
+            <div class="title">RevShop</div>
+        </div>
+        <video autoplay muted loop>
+            <source src="file:///C:/Users/Lenovo/Desktop/Revature_Training/HTML/images/Ecommerce.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="ecommerce-text">
+            At RevShop, we value our customers. As pioneers in the e-commerce space, we ensure seamless shopping experiences, great deals, and customer satisfaction. Join us today and explore a world of opportunities!
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 class="title">Customer Registration Page</h2>
+        <form id="registrationForm" onsubmit="handleSubmit(event)">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" required pattern="[A-Za-z0-9-.- _]{2,}" placeholder="Enter Username">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required placeholder="Enter Email">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Enter Password">
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" required placeholder="Confirm Password">
+            </div>
+
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="text" id="phoneNumber" required placeholder="Enter 10-digit Phone Number" pattern="\d{10}">
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea id="address" rows="2" required placeholder="Enter Address"></textarea>
+            </div>
+
+            <div class="button-box">
+                <button type="submit">Submit</button>
+                <span style="color: #000000;">Already have an account? 
+                <a href="CompleteFinalLoginPage.html" class="signup-link">SignUp</a>
+                </span>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("registrationForm").addEventListener("input", function(event) {
+            validateInput(event.target);
+        });
+
+        function handleSubmit(event) {
+            event.preventDefault(); // Prevent default form submission
+            window.location.href = "CompleteFinalLoginPage.html"; // Redirect to login page
+        }
+
+        function validateInput(input) {
+            const username = document.getElementById("username");
+            const email = document.getElementById("email");
+            const password = document.getElementById("password");
+            const confirmPassword = document.getElementById("confirmPassword");
+            const phoneNumber = document.getElementById("phoneNumber");
+            const address = document.getElementById("address");
+
+            if (input === username && username.value.length < 4) {
+                document.getElementById("usernameError").style.display = "block";
+            } else {
+                document.getElementById("usernameError").style.display = "none";
+            }
+
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            if (input === email && !emailPattern.test(email.value)) {
+                document.getElementById("emailError").style.display = "block";
+            } else {
+                document.getElementById("emailError").style.display = "none";
+            }
+
+            const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+            if (input === password && !passwordPattern.test(password.value)) {
+                document.getElementById("passwordError").style.display = "block";
+            } else {
+                document.getElementById("passwordError").style.display = "none";
+            }
+
+            if (input === confirmPassword && password.value !== confirmPassword.value) {
+                document.getElementById("confirmPasswordError").style.display = "block";
+            } else {
+                document.getElementById("confirmPasswordError").style.display = "none";
+            }
+
+            if (input === phoneNumber && phoneNumber.value.length !== 10) {
+                document.getElementById("phoneError").style.display = "block";
+            } else {
+                document.getElementById("phoneError").style.display = "none";
+            }
+
+            if (input === address && address.value.length === 0) {
+                document.getElementById("addressError").style.display = "block";
+            } else {
+                document.getElementById("addressError").style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>

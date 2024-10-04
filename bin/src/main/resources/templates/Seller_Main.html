@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RevShop</title>
+
+    <!-- Bootstrap CSS -->
+    <style>
+    	body {
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.navbar-nav {
+    display: flex;
+    justify-content: space-around; /* Spread items evenly with equal space */
+    align-items: center; /* Vertically center the items */
+    flex-direction: column; /* Align items in a column */
+    width: 100%; /* Ensure the navbar takes full width */
+}
+
+.navbar-nav .nav-link {
+    color: white;
+    text-align: center; /* Center text within the link */
+    width: 100%; /* Make each nav link fill the column width */
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffc107;
+}
+
+/* Dropdown styles */
+.nav-item .dropdown-menu {
+    background-color: #343a40;
+    border: none;
+    min-width: 180px;
+    text-align: left; /* Align dropdown text to the left */
+}
+
+.dropdown-menu .dropdown-item {
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #ffc107;
+    color: black;
+}
+
+/* Profile Icon Styles */
+.profile-icon {
+    width: 30px; /* Set icon width */
+    height: 30px; /* Set icon height */
+    border-radius: 50%; /* Make the icon circular */
+}
+
+/* Flexbox spacing for dropdown items */
+.navbar-nav .nav-item {
+    position: relative;
+    width: 100%; /* Make sure each nav-item takes full width */
+    display: flex;
+    justify-content: center; /* Center nav-items */
+    align-items: center; /* Center items vertically */
+    margin-bottom: 10px; /* Add space between each nav-item */
+}
+
+.nav-item:hover .dropdown-menu {
+    display: block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Center dropdown below the item */
+    top: 100%;
+    z-index: 1;
+}
+
+/* Transition effects for dropdown */
+.navbar-nav .dropdown-menu {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.nav-item:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+}
+
+/* Ensures dropdown stays within screen */
+.navbar-nav .dropdown-menu {
+    transform: translateX(-50%);
+}
+
+#salesChart {
+    width: 100%;
+    height: 400px;
+}
+.chart-card {
+            margin-bottom: 20px;
+        }
+
+.profile-dropdown {
+            display: none;
+        }
+
+        .profile-icon:hover + .profile-dropdown,
+        .profile-dropdown:hover {
+            display: block;
+            position: absolute;
+            top: 55px;
+            right: 15px;
+            background-color: white;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+
+        .profile-info {
+            margin-bottom: 10px;
+        }
+
+        .profile-dropdown a {
+            text-decoration: none;
+            color: black;
+        }
+        
+         .chart-card canvas {
+        max-width: 100% !important;
+        max-height: 325px !important; /* Reduced height */
+    }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<div th:insert="~{Seller_navbar.html}"></div>
+<!-- nav bar completed here -->
+<section class="details-section container">
+    <div class="header-container" style="margin:20px;">
+        <h4 id="seller_name" th:text="'Welcome, ' + ${sellerdto.name}">Welcome, Seller</h4>
+        <h6 id="seller_email" th:text="${sellerdto.email}">Email</h6>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Earnings</h5>
+                    <p class="card-text" id="totalEarnings" th:text="'₹' + ${sellerdto.totalEarning}">₹0</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Items Sold</h5>
+                    <p class="card-text" id="totalItemsSold" th:text="${sellerdto.totalItemSold}">0</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Current Month Earnings</h5>
+                    <p class="card-text" id="currentMonthEarnings" th:text="'₹' + ${sellerdto.currentMonthEarning}">₹0</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">This Month Items Sold</h5>
+                    <p class="card-text" id="currentMonthItemsSold" th:text="${sellerdto.currentMonthItemSold}">0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="chart-card col-md-6">
+            <h5>Items Sold</h5>
+            <canvas id="itemsSoldChart"></canvas>
+        </div>
+        <div class="chart-card col-md-6">
+            <h5>Earnings</h5>
+            <canvas id="earningsChart"></canvas>
+        </div>
+    </div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the values from the HTML content rendered by Thymeleaf
+        const totalEarnings = parseFloat(document.getElementById('totalEarnings').innerText.replace('₹', ''));
+        const currentMonthEarnings = parseFloat(document.getElementById('currentMonthEarnings').innerText.replace('₹', ''));
+        const totalItemsSold = parseInt(document.getElementById('totalItemsSold').innerText);
+        const currentMonthItemsSold = parseInt(document.getElementById('currentMonthItemsSold').innerText);
+
+        // Pie Chart for Items Sold
+        const itemsSoldCtx = document.getElementById('itemsSoldChart').getContext('2d');
+        new Chart(itemsSoldCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Total Items Sold', 'Current Month Items Sold'],
+                datasets: [{
+                    data: [totalItemsSold, currentMonthItemsSold],
+                    backgroundColor: ['#007bff', '#28a745'],
+                    borderColor: '#fff',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: '#333'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.raw;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Pie Chart for Earnings
+        const earningsCtx = document.getElementById('earningsChart').getContext('2d');
+        new Chart(earningsCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Total Earnings', 'Current Month Earnings'],
+                datasets: [{
+                    data: [totalEarnings, currentMonthEarnings],
+                    backgroundColor: ['#dc3545', '#ffc107'],
+                    borderColor: '#fff',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: '#333'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ₹' + context.raw;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

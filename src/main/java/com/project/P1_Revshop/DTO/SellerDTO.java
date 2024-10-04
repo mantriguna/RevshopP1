@@ -18,6 +18,7 @@ public class SellerDTO implements Serializable{
 	private int totalItemSold;
 	private double currentMonthEarning;
 	private int currentMonthItemSold;
+	public SellerDTO() {}
 	public SellerDTO(Long sellerId, String name, Long personalPhoneNumber, String email, String homeAddress,
 			String panNumber, String businessAddress, Long businessPhoneNumber, double totalEarning, int totalItemSold,
 			double currentMonthEarning, int currentMonthItemSold) {

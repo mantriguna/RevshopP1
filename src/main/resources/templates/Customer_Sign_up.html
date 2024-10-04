@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="/Images/RevShop_1.png" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Registration Page</title>
     <style>
@@ -13,98 +14,73 @@
         }
 
         body {
+            height: 100vh;
             display: flex;
-            height: 100vh; /* Height of the viewport */
-            overflow: hidden;
+            justify-content: center;
+            align-items: center;
             background-color: #FFFFFF;
+            overflow: hidden; /* Hide any overflow */
+            position: relative; /* Allow absolute positioning of child elements */
+            background-color: #478778; /* Updated body background color */
         }
 
         .video-container {
-            position: relative;
-            width: 50%;
-            height: 100vh; /* Full height of the viewport */
-            background-color: #000000;
-            border: 1px solid #FE5005; /* Add border to video container */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* Full height of the viewport */
+            z-index: -1; /* Send the video behind the content */
+            transition: width 0.5s ease; /* Smooth transition for video width */
         }
 
         .video-container video {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Maintain aspect ratio while covering the area */
-            border: none;
-        }
-
-        .title-container {
-    position: absolute;
-    top: 7px;
-    left: 7px;
-    z-index: 3;
-    display: flex;
-    align-items: center; /* Ensures both elements are vertically aligned */
-}
-
-.title-image {
-    width: 1cm;
-    height: 1cm;
-    margin: 0;
-    border: 1px solid #FFFFFF;
-}
-
-.title {
-    font-size: 32px;
-    font-weight: bold;
-    color: #FFFFFF;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    margin-left: 10px; /* Space between the logo and the title */
-    display: inline-block; /* Ensure title stays in line */
-}
-
-
-        .ecommerce-text {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            color: #FFFFFF;
-            font-size: 18px;
-            width: 90%;
+            object-fit: fill; /* Ensure video covers the entire area */
         }
 
         .container {
-            position: relative;
-            background-color: #FFFFFF;
-            padding: 20px;
-            width: 50%; /* Decreased width */
-            height: auto; 
-            border-radius: 10px;
+            background-color: #478778; /* Updated registration container color */
+            padding: 30px;
+            width: 30%; /* Set width to 70% */
+            height: auto; /* Set height to auto to accommodate content */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             justify-content: center;
+            border-radius: 10px; /* Curve the edges of the container */
+            z-index: 1; /* Make sure the container is above the video */
+            position: absolute; /* Allow absolute positioning */
+            top: 50px; /* Position below the button */
+            right: 0%; /* Align to the right with 15% margin */
+            display: none; /* Hide the container initially */
+            transition: height 0.5s ease; /* Smooth transition for container appearance */
         }
 
-
         .form-group {
-            margin-bottom: 10px; /* Reduced margin */
+            margin-bottom: 10px;
         }
 
         label {
             display: block;
-            font-size: 14px; /* Decreased size */
-            color: #000000;
+            font-size: 14px;
+            color: #FFFFFF; /* Keep label color white */
             margin-bottom: 5px;
         }
 
         input, textarea {
             width: 100%;
-            padding: 8px; /* Reduced padding */
-            border: 2px solid #000000;
+            padding: 8px;
+            border: 2px solid #FFFFFF; /* White border for inputs */
             border-radius: 5px;
-            font-size: 14px; /* Decreased size */
+            font-size: 14px;
             outline: none;
+            background-color: rgba(255, 255, 255, 0.8); /* Light background */
         }
 
         input:focus, textarea:focus {
-            border-color: #FE5005;
+            border-color: #FFD700; /* Gold border on focus */
         }
 
         .button-box {
@@ -115,23 +91,36 @@
         }
 
         button {
-            padding: 10px 15px; /* Reduced padding */
-            background-color: #FE5005;
+            padding: 10px 15px;
+            background-color: #FE5005; /* Gold button */
+            color: #FFFFFF; /* Keep button text color white */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #FFC107; /* Darker gold on hover */
+        }
+
+        .signup-link {
+            color: #000; /* Keep link color white */
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .registration-button {
+            position: absolute;
+            top: 5px; /* Position at the top */
+            right: 0%; /* Align to the right */
+            padding: 10px 15px;
+            background-color: #FE5005; /* Registration button color */
             color: #FFFFFF;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px; /* Decreased size */
-        }
-
-        button:hover {
-            background-color: #E04A04;
-        }
-
-        .signup-link {
-            color: #FE5005;
-            text-decoration: none;
-            font-size: 12px; /* Decreased size */
+            font-size: 14px;
         }
 
     </style>
@@ -139,25 +128,20 @@
 <body>
 
     <div class="video-container">
-        <div class="title-container">
-            <img src="images/RevShop.png" alt="RevShop Logo" class="title-image">
-            <div class="title">RevShop</div>
-        </div>
         <video autoplay muted loop>
-            <source src="file:///C:/Users/Lenovo/Desktop/Revature_Training/HTML/images/Ecommerce.mp4" type="video/mp4">
-            Your browser does not support the video tag.
+            <source src="/Images/Ecommerce.mp4" type="video/mp4">
+            alt="Your browser does not support the video tag."
         </video>
-        <div class="ecommerce-text">
-            At RevShop, we value our customers. As pioneers in the e-commerce space, we ensure seamless shopping experiences, great deals, and customer satisfaction. Join us today and explore a world of opportunities!
-        </div>
     </div>
 
-    <div class="container">
-        <h2 class="title">Customer Registration Page</h2>
-        <form id="registrationForm" onsubmit="handleSubmit(event)">
+    <button class="registration-button" onclick="toggleRegistration()">Registration</button>
+
+    <div class="container" id="registrationContainer">
+        <h2 class="title2">Customer Registration Page</h2>
+        <form id="registrationForm" th:onsubmit="handleSubmit(event)">
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" required pattern="[A-Za-z0-9-.- _]{2,}" placeholder="Enter Username">
+                <label for="username">Name</label>
+                <input type="text" id="username" required pattern="[A-Za-z0-9-.- _]{2,}" placeholder="Enter your name">
             </div>
 
             <div class="form-group">
@@ -187,8 +171,8 @@
 
             <div class="button-box">
                 <button type="submit">Submit</button>
-                <span style="color: #000000;">Already have an account? 
-                <a href="CompleteFinalLoginPage.html" class="signup-link">SignUp</a>
+                <span style="color: #FFFFFF;">Already have an account? 
+                <a th:href="@{/customer/login}" class="signup-link">Login</a>
                 </span>
             </div>
         </form>
@@ -199,9 +183,23 @@
             validateInput(event.target);
         });
 
+        function toggleRegistration() {
+            const container = document.getElementById("registrationContainer");
+            const videoContainer = document.querySelector(".video-container");
+
+            if (container.style.display === "none" || container.style.display === "") {
+                container.style.display = "flex"; // Show the registration container
+                container.style.height = "auto"; // Adjust height
+                videoContainer.style.width = "70%"; // Decrease video width
+            } else {
+                container.style.display = "none"; // Hide the registration container
+                videoContainer.style.width = "100%"; // Restore video width
+            }
+        }
+
         function handleSubmit(event) {
             event.preventDefault(); // Prevent default form submission
-            window.location.href = "CompleteFinalLoginPage.html"; // Redirect to login page
+            window.location.href = "@{/customer/register}"; // Redirect to login page
         }
 
         function validateInput(input) {
@@ -225,7 +223,7 @@
                 document.getElementById("emailError").style.display = "none";
             }
 
-            const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+            const passwordPattern = /^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[\W_]).{8,}$/;
             if (input === password && !passwordPattern.test(password.value)) {
                 document.getElementById("passwordError").style.display = "block";
             } else {
@@ -251,6 +249,5 @@
             }
         }
     </script>
-
 </body>
 </html>

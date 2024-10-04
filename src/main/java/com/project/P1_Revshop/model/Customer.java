@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 public class Customer {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private int customerId;
+	private Long customerId;
 	private String name;
 	private long phoneNumber;
 	private String email;
@@ -18,7 +18,8 @@ public class Customer {
 	private double walletBalance;
 	@Column(columnDefinition = "TEXT")
 	private String address;
-	public Customer(int customerId, String name, long phoneNumber, String email, String password, double walletBalance,
+	public Customer() {}
+	public Customer(Long customerId, String name, long phoneNumber, String email, String password, double walletBalance,
 			String address) {
 		super();
 		this.customerId = customerId;
@@ -29,10 +30,10 @@ public class Customer {
 		this.walletBalance = walletBalance;
 		this.address = address;
 	}
-	public int getCustomerId() {
+	public Long getCustomerId() {
 		return customerId;
 	}
-	public void setCustomerId(int customerId) {
+	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
 	}
 	public String getName() {

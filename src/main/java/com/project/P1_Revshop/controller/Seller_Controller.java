@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.P1_Revshop.DTO.SellerDTO;
+import com.project.P1_Revshop.exceptions.IncorrectPasswordException;
 import com.project.P1_Revshop.model.Seller;
 import com.project.P1_Revshop.service.Seller_Service;
 
@@ -100,5 +103,42 @@ public class Seller_Controller {
 	        }
 	    }
 	}
+	
+	
+	
+	
+	@GetMapping("/updateprofile")
+    public String getUpdateSellerPage(HttpSession session, Model model) {
+        // Fetch the seller information using the service
+		Long sellerId = (Long) session.getAttribute("sellerId");
+        SellerDTO sellerDTO = seller_service.getSellerById(sellerId);
+
+        // Add the sellerDTO object to the model, which will be passed to Thymeleaf
+        model.addAttribute("seller", sellerDTO);
+
+        // Return the name of the Thymeleaf template (HTML file)
+        return "Seller_Profileupdate"; // Assuming your Thymeleaf template file is named updateSellerDetails.html
+    }
+
+	@PostMapping("/update")
+    public String updateSeller(@ModelAttribute SellerDTO sellerDTO,
+                                @RequestParam String currentPassword,
+                                @RequestParam(required = false) String newPassword,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            seller_service.updateSellerDetails(sellerDTO, currentPassword,newPassword);
+            // Optionally add a success message
+            redirectAttributes.addFlashAttribute("successMessage", "Seller details updated successfully.");
+            return "redirect:/Seller/main"; // Redirect to the seller's profile or another page
+        } catch (IncorrectPasswordException e) {
+            // Redirect to the login page with an error message
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/Seller/login"; // Change to your actual login page URL
+        } catch (Exception e) {
+            // Handle other exceptions
+            redirectAttributes.addFlashAttribute("errorMessage", "An error occurred while updating details.");
+            return "redirect:/Seller/main"; // Redirect to an appropriate page
+        }
+    }
 
 }

@@ -32,7 +32,13 @@ public class Product_Service {
     @Autowired
     private Color_Repository colorRepository;
     
-    
+    public List<Product> findAllProducts() {
+        return productRepository.findAll();
+    }
+//    public List<Product> findByCategoryId(Long categoryId) {
+//        return productRepository.findByCategoryId(categoryId);
+//    }
+   
     public void addProduct(Product product) {
         productRepository.save(product);
     }
@@ -41,7 +47,10 @@ public class Product_Service {
         Optional<Product> productOptional = productRepository.findById(productId);
         return productOptional.orElse(null); // Handle case when product is not found
     }
-
+    public Optional<Product> pfindProductById(Long productId) {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        return productOptional; // Handle case when product is not found
+    }
 
     
     public List<Product> findProductsBySellerId(Long sellerId) {

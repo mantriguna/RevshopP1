@@ -12,7 +12,7 @@ import com.project.P1_Revshop.model.Product;
 @Repository
 public interface  Product_Repository extends JpaRepository< Product,Long> {
 	List<Product> findAllBySellerId(Long sellerId);
-	
+	//List<Product> findByCategoryId(Long categoryId);
 
 	
 }

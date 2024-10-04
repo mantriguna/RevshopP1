@@ -215,21 +215,21 @@
             <div class="profile-image">
                 <img src="https://static.vecteezy.com/system/resources/previews/020/526/176/original/3d-user-login-or-verification-icon-human-symbol-mobile-ui-ux-app-icons-vector.jpg" alt="Profile">
             </div>
-            <h2>Business Login</h2>
-            <form th:action="@{/Seller/login}" method="post" class="form-grid" onsubmit="validateForm(event)">
+            <h2>Customer Login</h2>
+            <form th:action="@{/customer/login}" method="post" class="form-grid" onsubmit="validateForm(event)">
                 <div class="input-box">
-                    <input type="text" id="email" name="email" required oninput="validateEmail()" th:value="${seller != null ? seller.email : ''}">
+                    <input type="text" id="email" name="email" required oninput="validateEmail()" th:value="${customer != null ? customer.email : ''}">
                     <label>Email</label>
                     <div class="error-message" th:if="${error != null and error == 'Email does not exist! Please check your email.'}">[[${error}]]</div>
                 </div>
                 <div class="input-box">
-                    <input type="password" id="password" name="password" required th:value="${seller != null ? seller.password : ''}">
+                    <input type="password" id="password" name="password" required th:value="${customer != null ? customer.password : ''}">
                     <label>Password</label>
                     <span class="eye-toggle" id="eyeIcon" onclick="togglePasswordVisibility()">👁</span>
                     <div class="error-message" th:if="${error != null and error == 'Wrong password!'}">[[${error}]]</div>
                 </div>
                 <div class="input-group">
-                        <a th:href="@{/ecom/ForgotPassword?userType=seller}" id="forgotLink">Forgot Password?</a>
+                        <a th:href="@{/ecom/ForgotPassword?userType=buyer}" id="forgotLink">Forgot Password?</a>
                     </div>
                 <div class="button-box">
                     <button type="submit">Sign in</button>
@@ -237,7 +237,7 @@
             </form>
 
             <div class="signup-prompt">
-                <p>Don't have an account? <a th:href="@{/Seller/register}">Sign Up</a></p>
+                <p>Don't have an account? <a th:href="@{/customer/register}">Sign Up</a></p>
             </div>
         </div>
     </div>

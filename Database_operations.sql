@@ -692,7 +692,9 @@ select * from product;
 select * from brand;
 select * from color;
 select * from product_image;
+select * from seller;
+select * from customer;
 -- 1
-
+update seller set email="guna15081947@gmail.com" where seller_id=1;
 
 drop database RevshopP1ProjectDevelopementDatabase;

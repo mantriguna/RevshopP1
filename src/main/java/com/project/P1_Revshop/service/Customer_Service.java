@@ -28,5 +28,10 @@ public class Customer_Service {
         buyer.setPassword(newPassword);
         customerRepository.save(buyer);
     }
+
+	public static Object findUserById(Long userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 

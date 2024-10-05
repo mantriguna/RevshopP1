@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="/Images/RevShop_1.png" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <style>
@@ -227,7 +228,9 @@
                     <span class="eye-toggle" id="eyeIcon" onclick="togglePasswordVisibility()">👁</span>
                     <div class="error-message" th:if="${error != null and error == 'Wrong password!'}">[[${error}]]</div>
                 </div>
-
+                <div class="input-group">
+                        <a th:href="@{/ecom/ForgotPassword?userType=seller}" id="forgotLink">Forgot Password?</a>
+                    </div>
                 <div class="button-box">
                     <button type="submit">Sign in</button>
                 </div>

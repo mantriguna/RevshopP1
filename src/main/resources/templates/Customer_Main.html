@@ -135,7 +135,7 @@
             height: 100%;
             object-fit: cover; /* Cover entire container */
             transition: height 0.5s ease; /* Smooth height transition */
-            padding: 10px;
+           /*  padding: 10px; */
         }
         .service-section {
             text-align: center;
@@ -474,19 +474,13 @@
 <!-- Navbar -->
 <div th:insert="~{Customer_navbar.html}"></div>
 
-
-
-<!-- Header -->
-<div class="header">
-    <p>Your one-stop destination for all your shopping needs!</p>
-</div>
-
 <!-- Video Container -->
 <div class="video-container">
     <video id="intro-video" autoplay muted loop>
         <source src="https://www.apple.com/105/media/ww/iphone/family/2024/cf19f185-dd7e-4350-97ff-e44860713b54/anim/welcome/large_2x.mp4#t=0.968043" type="video/mp4">
         Your browser does not support the video tag.
     </video>
+ </div>
 <h1 style="text-align:center;margin: 20px 0; font-weight: bold; color: #FE5005;">Phone</h1>
 <div class="container">
     <hr>
@@ -702,8 +696,10 @@
                         <p class="card-text"><strong>Discount Price:</strong> ₹<span th:text="${product.price - (product.maxDiscount * product.price / 100)}"></span></p>
                         <p class="card-text"><strong>Stock-Left:</strong> <span th:text="${product.stockQuantity}"></span></p>
                         <p class="card-text"><strong>Category:</strong> <span th:text="${product.category.categoryName}"></span></p>
-
-                        <button class="btn btn-primary" th:onclick="'addToCart(' + ${product.productId} + ')'">Add to Cart</button>
+                        <form th:action="@{/cart/add/{productId}(productId=${product.id})}" method="post">
+    <button type="submit">Add to Cart</button>
+</form>
+                        
                     </div>
                 </div>
             </div>
@@ -735,8 +731,13 @@
                         <p class="card-text"><strong>Discount Price:</strong> ₹<span th:text="${product.price - (product.maxDiscount * product.price / 100)}"></span></p>
                         <p class="card-text"><strong>Stock-Left:</strong> <span th:text="${product.stockQuantity}"></span></p>
                         <p class="card-text"><strong>Category:</strong> <span th:text="${product.category.categoryName}"></span></p>
+                            <!-- Assuming product_id is part of the URL, such as /cart/add/{product_id} -->
+<form th:action="@{/cart/add/{product_id}(product_id=${product.id})}" method="post">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}" /> <!-- CSRF token -->
+    <button type="submit" class="btn btn-primary">Add to Cart</button>
+</form>
+                            
 
-                        <button class="btn btn-primary" th:onclick="'addToCart(' + ${product.productId} + ')'">Add to Cart</button>
                     </div>
                 </div>
             </div>

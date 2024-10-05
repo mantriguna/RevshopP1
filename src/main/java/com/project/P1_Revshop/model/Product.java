@@ -161,4 +161,9 @@ public class Product {
         this.brand = brand;
     }
 
+	public Object getId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

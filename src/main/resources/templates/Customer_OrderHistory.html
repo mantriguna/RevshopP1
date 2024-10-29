@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order History</title>
+    <link rel="icon" type="image/png" size="32x32" href="/Images/RevShop_1.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: white !important;
+        }
+        .order-card {
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            width: 1100px !important;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .order-card {
+                width: calc(50% - 20px);
+            }
+            .product-img {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .order-card {
+                width: 100%;
+            }
+        }
+
+        .cart-summary-box {
+            border: 2px solid #ffd700;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fffaf0;
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .product-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .product-details, .order-details {
+            flex: 1;
+            padding-right: 20px;
+        }
+
+        .status {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .total-paid {
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .divider {
+            width: 1px;
+            height: 80%;
+            background-color: #ddd;
+            margin: 0 15px;
+        }
+
+        .order-date-section {
+            text-align: right;
+            flex-basis: 20%;
+        }
+
+        .order-date-section p {
+            margin: 0;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        /* Star Rating Styles */
+        .star-rating {
+            display: flex;
+            gap: 5px;
+        }
+
+        .star {
+            font-size: 24px;
+            cursor: pointer;
+            color: #ccc;
+        }
+
+        .star.selected {
+            color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+    <div th:insert="~{Customer_navbar.html}"></div>
+
+    <div class="container">
+        <div class="row">
+            <h2 class="my-4">Order History</h2>
+            <hr>
+            <div class="col-12 d-flex flex-wrap justify-content-start" 
+                 th:if="${orders != null and !#lists.isEmpty(orders)}" 
+                 th:each="order, iterStat : ${orders}">
+                <div class="order-card">
+                    <a th:href="@{/customerproduct/displayproducts/{id}(id=${order.product.productId})}">
+                        <div class="image-container">
+                            <img th:each="image : ${order.product.imageUrls}"
+                                 th:src="${image.imageUrl}"
+                                 alt="Product Image Thumbnail"
+                                 class="img-thumbnail product-img">
+                        </div>
+                    </a>
+                    <div class="order-details">
+                        <h5 th:text="${order.product.productName}" class="mb-1">Product Name</h5>
+                        <p>Quantity: <span th:text="${order.quantity}">1</span></p>
+                        <p class="total-paid">Total Paid: <span th:text="'₹' + ${#numbers.formatDecimal(order.price_per_unit * order.quantity, 1, 2)}">₹0.00</span></p>
+                        <p>Color:&nbsp;<span class="status" th:text="${order.color.colorName}">Color</span></p>
+                        
+                    </div>
+
+                    <!-- Divider Line -->
+                    <div class="divider"></div>
+
+                    <!-- Right-aligned Order Date Section -->
+                    <div class="order-date-section">
+                        <p class="status" th:text="${order.status}" 
+                           style="font-weight: bold !important;color: #4CAF50 !important; font-size: 40px">Status</p>
+                        <p>Order Date: <span th:text="${#dates.format(order.order.order_date, 'dd MMM yyyy')}">Order Date</span></p>
+                        <div th:if="${!reviews[iterStat.index]}" class="text-end">
+                        	<div th:if="${order.status == 'Delivered'}" class="text-end">
+	                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+	                                    th:data-bs-target="'#addReviewModal' + ${order.product.productId}" 
+	                                    >Add Review</button>
+	                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Review Modal -->
+    <div th:each="order : ${orders}" th:id="'addReviewModal' + ${order.product.productId}" class="modal fade" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addReviewModalLabel">Add Review for <span th:text="${order.product.productName}">Product</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="star-rating">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                    <input type="hidden" id="rating" name="rating" value="0">
+                    <div class="form-group mt-3">
+                        <label for="comment">Comment</label>
+                        <textarea id="comment" class="form-control" name="comment" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+                    <button type="button" class="btn btn-primary" th:attr="onclick=|submitReview('${order.product.productId}')|">Submit</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Rotating images within the image container
+        document.querySelectorAll('.image-container').forEach(function(container) {
+            const images = container.querySelectorAll('img');
+            let currentImageIndex = 0;
+
+            images.forEach((img, index) => {
+                if (index !== currentImageIndex) {
+                    img.classList.add('hidden');
+                }
+            });
+
+            setInterval(function() {
+                images[currentImageIndex].classList.add('hidden');
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                images[currentImageIndex].classList.remove('hidden');
+            }, 4000);
+        });
+
+        // Handle star rating selection
+        document.querySelectorAll('.star-rating').forEach(function(starRating) {
+            const stars = starRating.querySelectorAll('.star');
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const ratingValue = this.getAttribute('data-value');
+                    document.getElementById('rating').value = ratingValue;
+
+                    stars.forEach(s => {
+                        s.classList.remove('selected');
+                    });
+                    for (let i = 0; i < ratingValue; i++) {
+                        stars[i].classList.add('selected');
+                    }
+                });
+            });
+        });
+
+        // Function to handle review submission
+        function submitReview(productId) {
+            const rating = document.getElementById('rating').value;
+            const comment = document.getElementById('comment').value;
+
+            // Perform a POST request to submit the review
+            fetch('/review/submit-review', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId, rating, comment })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Handle successful submission (e.g., close modal, show success message)
+                    alert('Review submitted successfully!');
+                    // Optionally, you can reload the page or update the UI to reflect the new review
+                    location.reload();
+                } else {
+                    // Handle errors (e.g., show an error message)
+                    alert('Error submitting review: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while submitting the review. Please try again later.');
+            });
+        }
+    </script>
+</body>
+</html>
+

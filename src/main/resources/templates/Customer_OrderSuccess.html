@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Place Order</title>
+    <link rel="icon" type="image/png" size="32x32" href="/Images/RevShop_1.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+    body{
+    background-color: #ffffff !important;
+    }
+        .order-section { margin: 30px 0; }
+        .success-gif { display: none; width: 100%; max-width: 640px; margin: 20px auto; }
+    </style>
+    <script>
+        async function placeOrder() {
+            try {
+                const response = await fetch('/order/placeOrder', {
+                    method: 'POST',
+                    body: new URLSearchParams(new FormData(document.getElementById("orderForm")))
+                });
+
+                if (response.ok) {
+                    const result = await response.text();
+                    if (result === "Order placed successfully!") {
+                        const gif = document.getElementById("orderSuccessGif");
+                        gif.style.display = "block";
+
+                        // Hide form and other sections during GIF playback
+                        document.getElementById("orderForm").style.display = "none";
+                        document.querySelector(".order-section").style.display = "none";
+
+                        // Redirect to customer main page after GIF ends
+                        setTimeout(() => {
+                            window.location.href = "/customer/main";
+                        }, 6000); // Adjust timeout to match the GIF duration
+                    } else {
+                        alert(result);
+                    }
+                } else {
+                    alert("Failed to place order. Please try again.");
+                }
+            } catch (error) {
+                console.error('Error placing order:', error);
+            }
+        }
+    </script>
+</head>
+<body style="background-color:white;">
+
+<!-- Include Navbar -->
+<div th:insert="~{Customer_navbar}"></div>
+
+<div class="container order-section">
+    <div>
+        <h1 style="margin-left:20%;">Place Your Order</h1>
+        <img src="/Images/placeorder.jpg" alt="Place Order" class="img-fluid mb-4" style="width:78%;"> 
+    </div>
+    <hr>
+
+    <div th:if="${customer != null}">
+        <div th:if="${cartItems != null && !#lists.isEmpty(cartItems)}">
+            <h4>Current Wallet Balance: ₹<span th:text="${#numbers.formatDecimal(customer.walletBalance, 0, 2)}"></span></h4>
+            <h4>Total Billing Amount: ₹<span th:text="${totalCartValue}"></span></h4>
+
+            <input type="hidden" id="walletAmount" th:value="${customer.walletBalance}">
+            <input type="hidden" id="totalAmount" th:value="${totalCartValue}">
+
+            <div class="row mt-4">
+                <div class="col-md-6" id="addMoneySection" th:if="${customer.walletBalance < totalCartValue}">
+                    <p>Insufficient wallet balance! Please add money to your wallet to place the order.</p>
+                    <a th:href="@{/customer/wallet}" class="btn btn-warning">Go to Wallet to Add Money</a>
+                </div>
+
+                <div class="col-md-6" id="proceedSection" th:if="${customer.walletBalance >= totalCartValue}">
+                    <form id="orderForm" method="post" th:action="@{/order/placeOrder}" onsubmit="event.preventDefault(); placeOrder();">
+					    <div class="mb-3">
+					        <label for="deliveryAddress" class="form-label">Delivery Address</label>
+					        <textarea class="form-control" id="deliveryAddress" name="deliveryAddress" rows="3" style="width: 250%;" required></textarea>
+					    </div>
+					
+					    <!-- Make sure this name matches exactly with your method parameter -->
+					    <input type="hidden" name="totalCartValue" th:value="${totalCartValue}">
+					    <input type="hidden" name="customer_id" th:value="${customer.customerId}">
+					    <button type="submit" class="btn btn-success">Proceed & Place Order</button>
+					</form>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <a th:href="@{/cart/view}" class="btn btn-secondary">Back to Cart</a>
+                </div>
+            </div>
+        </div>
+        <div th:if="${cartItems == null || #lists.isEmpty(cartItems)}">
+            <p>Your cart is empty.</p>
+        </div>
+    </div>
+    <div th:if="${customer == null}">
+        <p>You need to log in to place an order.</p>
+    </div>
+</div>
+
+<!-- Order success GIF, hidden by default -->
+<img id="orderSuccessGif" src="/Images/OrderSuccess.gif" alt="Order Success" class="success-gif">
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var totalAmount = parseFloat(document.getElementById("totalAmount").value);
+        var walletAmount = parseFloat(document.getElementById("walletAmount").value);
+
+        if (walletAmount >= totalAmount) {
+            document.getElementById("proceedSection").style.display = "block";
+            document.getElementById("addMoneySection").style.display = "none";
+        } else {
+            document.getElementById("proceedSection").style.display = "none";
+            document.getElementById("addMoneySection").style.display = "block";
+        }
+    });
+</script>
+
+</body>
+</html>

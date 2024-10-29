@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RevShop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <script>
+        // Fetch brands based on selected category
+        async function fetchBrandsByCategory(categoryId) {
+    const brandSelect = document.querySelector("select[name='brand']");
+    brandSelect.innerHTML = '<option value="">Select Brand</option>'; // Clear existing options
+
+    if (categoryId) {
+        try {
+            // Correct the fetch URL to use backticks for template literals
+            const response = await fetch(`/SellerProduct/brands?categoryId=${categoryId}`);
+
+            if (response.ok) {
+                const brands = await response.json(); // Parse JSON response
+                brands.forEach(brand => {
+                    const option = document.createElement('option');
+                    option.value = brand.brandId;
+                    option.textContent = brand.brandName;
+                    brandSelect.appendChild(option); // Add brand options dynamically
+                });
+            } else {
+                console.error('Failed to fetch brands for category:', categoryId);
+            }
+        } catch (error) {
+            console.error('Error fetching brands:', error);
+        }
+    }
+}
+
+
+        function addImageUrlInput() {
+            const imageUrlContainer = document.getElementById('imageUrlInputs');
+
+            // Create a new row for the image URL
+            const newRow = document.createElement('div');
+            newRow.className = 'row mb-2';
+
+            // Create input for image URL
+            const imageCol = document.createElement('div');
+            imageCol.className = 'col';
+            const newImageInput = document.createElement('input');
+            newImageInput.type = 'url';
+            newImageInput.name = 'imageUrls'; // Note: If using same name, it should be handled on server-side to get all URLs
+            newImageInput.className = 'form-control';
+            newImageInput.placeholder = 'Enter Image URL';
+            newImageInput.required = true;
+            imageCol.appendChild(newImageInput);
+
+            newRow.appendChild(imageCol);
+            imageUrlContainer.appendChild(newRow);
+        }
+
+        // Function to add new color input dynamically
+        function addColorInput() {
+        const colorContainer = document.getElementById('colorInputs');
+
+        // Create a new row for the color name and URL
+        const newRow = document.createElement('div');
+        newRow.className = 'row mb-2';
+
+        // Create input for color name
+        const colorNameCol = document.createElement('div');
+        colorNameCol.className = 'col';
+        const newColorNameInput = document.createElement('input');
+        newColorNameInput.type = 'text';
+        newColorNameInput.name = 'colorNames';
+        newColorNameInput.className = 'form-control';
+        newColorNameInput.placeholder = 'Enter Color Name';
+        newColorNameInput.required = true;
+        colorNameCol.appendChild(newColorNameInput);
+
+        // Create input for color URL
+        const colorUrlCol = document.createElement('div');
+        colorUrlCol.className = 'col';
+        const newColorUrlInput = document.createElement('input');
+        newColorUrlInput.type = 'url';
+        newColorUrlInput.name = 'colorUrls';
+        newColorUrlInput.className = 'form-control';
+        newColorUrlInput.placeholder = 'Enter Color URL';
+        newColorUrlInput.required = true;
+        colorUrlCol.appendChild(newColorUrlInput);
+
+        newRow.appendChild(colorNameCol);
+        newRow.appendChild(colorUrlCol);
+        colorContainer.appendChild(newRow);
+    }
+    </script>
+</head>
+<body>
+<div th:insert="~{Seller_navbar.html}"></div>
+    <div class="container mt-5">
+        <h2>Add New Product</h2>
+        <hr>
+
+        <form th:action="@{/SellerProduct/addProduct}" method="post">
+            <!-- Product Name -->
+            <div class="mb-3">
+                <label for="productName" class="form-label">Product Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" name="productName" placeholder="Enter Product Name" required>
+            </div>
+
+            <!-- Category Selection -->
+            <div class="mb-3">
+                <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
+                <select class="form-select" name="category" required onchange="fetchBrandsByCategory(this.value)">
+                    <option value="">Select Category</option>
+                    <th:block th:each="category : ${categories}">
+                        <option th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
+                    </th:block>
+                </select>
+            </div>
+
+            <!-- Brand Selection -->
+            <div class="mb-3">
+                <label for="brand" class="form-label">Brand <span class="text-danger">*</span></label>
+                <select class="form-select" name="brand" required>
+                    <option value="">Select Brand</option>
+                </select>
+            </div>
+
+            
+
+            <!-- Description Input -->
+            <div class="mb-3">
+                <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+                <textarea class="form-control" name="description" placeholder="Enter Product Description" rows="4" required></textarea>
+                <small class="form-text text-muted">Provide a brief description of the product.</small>
+            </div>
+            <!-- Color Input Section -->
+			<div id="colorInputs" class="mb-3">
+			    <label for="colors" class="form-label">Color <span class="text-danger">*</span></label>
+			    <div class="row mb-2">
+			        <div class="col">
+			            <input type="text" class="form-control" name="colorNames" placeholder="Enter Color Name" required>
+			        </div>
+			        <div class="col">
+			            <input type="url" class="form-control" name="colorUrls" placeholder="Enter Color URL" required>
+			        </div>
+			    </div>
+			</div>
+			<button type="button" class="btn btn-secondary mt-2" onclick="addColorInput()">Add Another Color</button>
+	
+	     
+            <!-- Image URLs Section -->
+            <div id="imageUrlInputs" class="mb-3">
+                <label for="imageUrls" class="form-label">Image URLs <span class="text-danger">*</span></label>
+                <div class="row mb-2">
+                    <div class="col">
+                        <input type="url" class="form-control" name="imageUrls" placeholder="Enter Image URL" required>
+                        <small class="form-text text-muted">Add multiple URLs by clicking "Add Another Image URL".</small>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary mt-2" onclick="addImageUrlInput()">Add Another Image URL</button>
+
+            <!-- Price Input -->
+            <div class="mb-3">
+                <label for="price" class="form-label">Price <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" name="price" placeholder="Enter Price" required>
+            </div>
+
+            <!-- Discount Input -->
+            <div class="mb-3">
+                <label for="discount" class="form-label">Discount (%)</label>
+                <input type="number" class="form-control" name="discount" placeholder="Enter Discount Percentage" min="0" max="100">
+                <small class="form-text text-muted">Optional: Enter a discount percentage if applicable.</small>
+            </div>
+            <!-- Stock Quantity Input -->
+			<div class="mb-3">
+			    <label for="stockQuantity" class="form-label">Stock Quantity <span class="text-danger">*</span></label>
+			    <input type="number" class="form-control" name="stockQuantity" placeholder="Enter Stock Quantity" required>
+			</div>
+            
+            <!-- Threshold Input -->
+            <div class="mb-3">
+                <label for="threshold" class="form-label">Threshold <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" name="threshold" placeholder="Enter Stock Threshold" required>
+            </div>
+
+            <!-- Seller ID (Hidden Field) -->
+            <input type="hidden" name="sellerdto" th:value="${sellerdto}">
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

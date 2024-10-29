@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revshop Buyer Dashboard</title>
+    <link rel="icon" href="/Images/RevShop_1.png" type="image/png"> <!-- Updated line for favicon -->
+    <link rel="stylesheet" href="/CSS/Customer-main-style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Additional CSS for image sliding effect */
+        body{
+        background-color: #FE5000;
+        }
+        .image-container {
+            position: relative;
+            height: 270px;
+            overflow: hidden;
+        }
+        .image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 1s ease-in-out;
+        }
+        .image-container img.hidden {
+            opacity: 0;
+        }
+
+        /* Fixed height for card description */
+        .card-text {
+            max-height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Google Sans";;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2874f0;
+        }
+
+        .join-plus {
+            font-size: 14px;
+            color: #888;
+            margin-left: 5px;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .user-options {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-name {
+            margin-right: 20px;
+        }
+
+        .cart {
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        .become-seller {
+            background-color: #2874f0;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .image-slider {
+            position: relative;
+            width: 100%;
+            height: 75vh; /* 30% of viewport height */
+            overflow: hidden;
+        }
+
+        .image-slider img {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            padding: 30px;
+        }
+
+        .image-slider img.active {
+            opacity: 1;
+        }
+        .header {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2874f0;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 18px;
+            color: #555;
+        }
+        .video-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Hide overflow */
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Cover entire container */
+            transition: height 0.5s ease; /* Smooth height transition */
+            padding: 10px;
+        }
+        .service-section {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .service-section h2 {
+            font-size: 28px;
+            color: #2874f0;
+            margin-bottom: 20px;
+            padding: auto;
+        }
+
+        .service-container {
+            display: flex;
+            overflow-x: auto; /* Allow horizontal scrolling */
+            padding: 10px;
+            scroll-snap-type: x mandatory; /* Snap scrolling */
+        }
+
+        .service-box {
+            width: 10cm; /* 7cm in real life */
+            height: 6cm; /* 10cm in real life */
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-right: 15px; /* Space between boxes */
+            scroll-snap-align: start; /* Align to start */
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s; /* Add a hover effect */
+            
+            
+        }
+
+        .service-box:hover {
+            transform: scale(1.05); /* Scale up on hover */
+        }
+
+        .container {  
+            display: flex;  
+            justify-content: space-around;  
+            margin-top: 20px;  
+        }  
+        .category {  
+            background-color: #e0e0e0;  
+            border-radius: 10px;  
+            padding: 15px 20px;  
+            display: flex;  
+            align-items: center;  
+            width: 230px; /* Adjust width as needed */  
+            height: 60px; /* Adjust height as needed */  
+            transition: background-color 0.3s;  
+            cursor: pointer;  
+        }  
+        .category:hover {  
+            background-color: #b0c4de; /* Light blue on hover */  
+        }  
+        .icon {  
+            width: 40px;  
+            height: 40px;  
+            border-radius: 50%;  
+            background-color: white;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            margin-right: 10px; /* Space between icon and text */  
+        }  
+        .phone { background-color: #ffcc00; }  
+        .pods { background-color: #ff6699; }  
+        .tabs { background-color:  blue; }  
+        .laptops { background-color: green; } 
+
+        .device-container {  
+            display: flex;  
+            justify-content: space-around;  
+            flex-wrap: wrap;  
+        }  
+        .device-card {  
+            background: #ffffff;  
+            border-radius: 15px;  
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);  
+            margin: 20px;  
+            padding: 20px;  
+            width: 250px;  
+            text-align: center;  
+            transition: transform 0.3s;  
+        }  
+        .device-card:hover {  
+            transform: translateY(-5px);  
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);  
+        }  
+        .device-title {  
+            font-size: 1.5em;  
+            margin-bottom: 10px;  
+            color: #333;  
+        }  
+        .device-text {  
+            font-size: 0.9em;  
+            line-height: 1.5;  
+            color: #666;  
+        }
+
+        .video2-container {
+    width: 100%; /* Set the width of the container to 100% */
+    margin: 0; /* Remove margin for full-width effect */
+    padding-top: 20px; /* Remove padding */
+    border: none; /* No border for the container */
+    overflow: hidden; /* Ensure the video fits inside */
+}
+
+.video2-container video {
+    width: 100%; /* Make the video fill the container */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Ensure no extra space below the video */
+}
+.video-container-3 {
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+    overflow: hidden;
+}
+
+.video-container-3 video {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Flex container styles */
+.image-container-2 {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background-color: #f5f5f5;
+    padding: 50px 0;
+    overflow: hidden;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Content for each slide */
+.content-2 {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.active-2 {
+    opacity: 1;
+}
+
+/* Image box styles */
+.image-box-2 {
+    flex: 1;
+    padding-left: 20px;
+}
+
+.image-box-2 img {
+    width: 100%;
+    height: auto;
+    max-width: 400px;
+    object-fit: contain;
+}
+
+/* Text box styles */
+.text-box-2 {
+    flex: 1;
+    text-align: center;
+    padding-right: 40px;
+}
+
+.text-box-2 h2 {
+    font-size: 2rem;
+    color: #000;
+}
+
+.text-box-2 p {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/* Add transitions between slides */
+@keyframes slideFade {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .image-container-2 {
+        flex-direction: column;
+    }
+
+    .image-box-2 img {
+        max-width: 100%;
+    }
+
+    .text-box-2 {
+        padding-top: 20px;
+    }
+}
+
+/* Flex container styles */
+.image-container-3 {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background-color: #f5f5f5;
+    padding: 50px 0;
+    overflow: hidden;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Content for each slide */
+.content-3 {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.active-3 {
+    opacity: 1;
+}
+
+/* Image box styles (now on the right side) */
+.image-box-3 {
+    flex: 1;
+    padding-right: 20px;
+    padding-left: 40px;
+}
+
+.image-box-3 img {
+    width: 100%;
+    height: auto;
+    max-width: 400px;
+    object-fit: contain;
+}
+
+/* Text box styles (now on the left side) */
+.text-box-3 {
+    flex: 1;
+    text-align: center;
+    padding-left: 50px;
+}
+
+.text-box-3 h2 {
+    font-size: 2rem;
+    color: #000;
+}
+
+.text-box-3 p {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/* Add transitions between slides */
+@keyframes slideFade {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .image-container-3 {
+        flex-direction: column;
+    }
+
+    .image-box-3 img {
+        max-width: 200%;
+    }
+
+    .text-box-3 {
+        padding-top: 20px;
+    }
+}
+
+.image-slider-4 {
+    position: relative;
+    width: 100%;
+    height: 75vh;
+    overflow: hidden;
+}
+
+.image-slider-4 img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    padding: 30px;
+}
+
+.image-slider-4 img.active {
+    opacity: 1;
+}
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+     /* Set the background color */
+}
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<div th:insert="~{Customer_navbar.html}"></div>
+
+
+
+<!-- Header -->
+<div class="header">
+    <p><b>Hello <span th:if="${customer != null}" th:text="${customer.name}"></span></b>, Your one-stop destination for all your shopping needs!</p>
+    
+</div>
+
+<!-- Video Container -->
+<div class="video-container">
+    <video id="intro-video" autoplay muted loop>
+        <source src="https://www.apple.com/105/media/ww/iphone/family/2024/cf19f185-dd7e-4350-97ff-e44860713b54/anim/welcome/large_2x.mp4#t=0.968043" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+<h1 style="text-align:center;margin: 20px 0; font-weight: bold; color: #FE5005;">Phone</h1>
+<div class="container">
+    <hr>
+    <div class="row">
+	    <div class="row" th:if="${productList != null}">
+	        <div class="col-md-4" th:each="product : ${productList}" th:if="${product.category.categoryId == 1}"> <!-- Filter for category ID 1 -->
+	            <!-- Wrap the card in a link to make the whole card clickable -->
+	            <a th:href="@{/customerproduct/displayproducts/{id}(id=${product.productId})}" class="text-decoration-none text-dark">
+	                <div class="card mb-4">
+	                    <div class="image-container">
+	                        <!-- Display product images with sliding effect -->
+	                        <img th:if="${product.imageUrls != null and product.imageUrls.size() > 0}"
+	                             th:each="image, iterStat : ${product.imageUrls}" 
+	                             th:src="@{${image.imageUrl}}"
+	                             th:classappend="${iterStat.index > 0} ? 'hidden' : ''"
+	                             class="card-img-top" 
+	                             alt="Product Image">
+	                    </div>
+	                    <div class="card-body">
+	                        <h5 class="card-title" th:text="${product.productName}"></h5>
+	                        <p class="card-text" th:text="${product.description} + '.........'"></p> <!-- Append ellipsis -->
+	                        <p class="card-text"><strong>Price:</strong> ₹<span th:text="${product.price}"></span></p>
+	                        <p class="card-text"><strong>Discount Price:</strong> ₹<span th:text="${product.price - (product.maxDiscount * product.price / 100)}"></span></p>
+	                        <p class="card-text"><strong>Stock-Left:</strong> <span th:text="${product.stockQuantity}"></span></p>
+	                        <p class="card-text"><strong>Category:</strong> <span th:text="${product.category.categoryName}"></span></p>
+	
+	                        <!-- Add to Cart button inside the card -->
+	                        <button class="btn btn-primary" th:onclick="'addToCart(' + ${product.productId} + ')'">Add to Cart</button>
+	                    </div>
+	                </div>
+	            </a>
+	        </div>
+	    </div>
+	</div>
+    
+</div>
+
+<!--Top Categories-->
+<h2 style="text-align: center; margin: 20px 0; font-weight: bold; color: #FE5005; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">Top Categories</h2>  
+<div class="container">  
+    <div class="category">  
+        <div class="icon phone">📱</div>  
+        <div>Phones</div>  
+    </div>  
+    <div class="category">  
+        <div class="icon pods">🎧</div>  
+        <div>Pods</div>  
+    </div>  
+    <div class="category">  
+        <div class="icon tabs">💻</div>  
+        <div>Tabs</div>  
+    </div>  
+    <div class="category">  
+        <div class="icon laptops">🖥️</div>  
+        <div>Laptops</div>  
+    </div>  
+</div>  
+
+<!--Image slider2-->
+<div class="image-slider-4">
+    <img src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/iphone-se-finish-select-202207-product-red_AV1_FMT_WHH?wid=1280&hei=492&fmt=p-jpg&qlt=80&.v=VEhreGxMWU8vckorVEJ3dVU2RjJZVVNCSGJEVklzV3dtVWxKME5oOWltbjVVekpmdFBRNXNaQWgrV3hncjRqTVZyZU10VldzN05ENll4dW0xeUlHNEFYZWRhV1JMZjVpMnNsVjZuVzNDRjR6aS91YVcxYUZpZGczeVJUNEFNTHpGVmtHems4eW94Ulo0aHJoUkFDQ1FRPT0=&traceId=1" class="active">
+    <img src="https://www.reliancedigital.in/wp-content/uploads/2020/12/Realme_Airbuds_Cover.jpg">
+    <img src="https://i.ytimg.com/vi/2u194lYrXWU/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDWGRYCFOdRRZ5EZ081wk4QVYPuZw">
+    <img src="https://images.samsung.com/is/image/samsung/assets/in/2307/pcd/Galaxy_Tab_S9_Series_PCD_Main_KV_01_Family_1440x640_PC.jpg?imwidth=1536">
+</div>
+
+<!--image and information-->
+<div class="image-container-2">
+    <!-- Image and Text 1 -->
+    <div class="content-2 slide-1 active-2">
+        <div class="image-box-2">
+            <img src="https://image01-in.oneplus.net/media/202407/10/a5965d66f91f3669481b04c776170d91.png?x-amz-process=image/format,webp/quality,Q_80" alt="Phone Image 1">
+        </div>
+        <div class="text-box-2">
+            <h2>Explore the Latest Phones</h2>
+            <p>Discover high-performance smartphones with stunning displays, long battery life, and cutting-edge technology.</p>
+        </div>
+    </div>
+
+    <!-- Image and Text 2 -->
+    <div class="content-2 slide-2">
+        <div class="image-box-2">
+            <img src="https://i03.appmifile.com/333_item_in/04/07/2024/33769d7bfd4ae8b6c837ff1996b5b2fa!600x600!85.png" alt="Tablet Image">
+        </div>
+        <div class="text-box-2">
+            <h2>Explore the Latest Tabs</h2>
+            <p>Experience the power of portable computing with high-performance tablets, perfect for work, entertainment, and creativity on the go.</p>
+        </div>
+    </div>
+</div>
+
+
+<!--Video Container 2-->
+<div class="video2-container">
+    <video id="video2" autoplay muted loop playsinline>
+        <source src="https://images.acer.com/is/content/acer/swift-14-ai-pc-acer-ai-win24-npu-transcode" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+<h1 style="text-align:center;margin: 20px 0; font-weight: bold; color: #FE5005;">Laptop</h1>
+<div class="container">
+    <hr>
+    <div class="row">
+	    <div class="row" th:if="${productList != null}">
+	        <div class="col-md-4" th:each="product : ${productList}" th:if="${product.category.categoryId == 2}"> <!-- Filter for category ID 1 -->
+	            <!-- Wrap the card in a link to make the whole card clickable -->
+	            <a th:href="@{/customerproduct/displayproducts/{id}(id=${product.productId})}" class="text-decoration-none text-dark">
+	                <div class="card mb-4">
+	                    <div class="image-container">
+	                        <!-- Display product images with sliding effect -->
+	                        <img th:if="${product.imageUrls != null and product.imageUrls.size() > 0}"
+	                             th:each="image, iterStat : ${product.imageUrls}" 
+	                             th:src="@{${image.imageUrl}}"
+	                             th:classappend="${iterStat.index > 0} ? 'hidden' : ''"
+	                             class="card-img-top" 
+	                             alt="Product Image">
+	                    </div>
+	                    <div class="card-body">
+	                        <h5 class="card-title" th:text="${product.productName}"></h5>
+	                        <p class="card-text" th:text="${product.description} + '.........'"></p> <!-- Append ellipsis -->
+	                        <p class="card-text"><strong>Price:</strong> ₹<span th:text="${product.price}"></span></p>
+	                        <p class="card-text"><strong>Discount Price:</strong> ₹<span th:text="${product.price - (product.maxDiscount * product.price / 100)}"></span></p>
+	                        <p class="card-text"><strong>Stock-Left:</strong> <span th:text="${product.stockQuantity}"></span></p>
+	                        <p class="card-text"><strong>Category:</strong> <span th:text="${product.category.categoryName}"></span></p>
+	
+	                        <!-- Add to Cart button inside the card -->
+	                        <button class="btn btn-primary" th:onclick="'addToCart(' + ${product.productId} + ')'">Add to Cart</button>
+	                    </div>
+	                </div>
+	            </a>
+	        </div>
+	    </div>
+	</div>
+</div>
+<!-- Information about icons-->
+<h1 style="text-align: center; margin: 20px 0; font-weight: bold; color: #2874f0; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">Device Overview</h1>  
+<div class="device-container">  
+
+    <div class="device-card">  
+        <div class="device-title">Smartphones</div>  
+        <div class="device-text">Compact and powerful, smartphones keep you connected on the go.</div>  
+        <div class="device-text">With advanced cameras and apps, they enhance daily activities.</div>  
+    </div>  
+
+    <div class="device-card">  
+        <div class="device-title">Laptops</div>  
+        <div class="device-text">Laptops offer versatility and performance for both work and play.</div>  
+        <div class="device-text">From gaming to business tasks, they are essential tools.</div>  
+    </div>  
+
+    <div class="device-card">  
+        <div class="device-title">Wireless Pods</div>  
+        <div class="device-text">Pods provide a seamless audio experience with freedom from wires.</div>  
+        <div class="device-text">Ideal for commuting or at the gym, they deliver rich sound.</div>  
+    </div>  
+
+    <div class="device-card">  
+        <div class="device-title">Tablets</div>  
+        <div class="device-text">Tablets combine the portability of phones with the functionality of laptops.</div>  
+        <div class="device-text">Perfect for browsing, streaming, and productivity on the go.</div>  
+    </div>  
+
+</div> 
+
+<!--Image and information-->
+<div class="image-container-3">
+    <!-- Image and Text 1 (Tab Information) -->
+    <div class="content-3 slide-1 active-3">
+        <div class="text-box-3">
+            <h2>Experience the Best Earpods</h2>
+            <p>Feel the music like never before with noise-cancellation and rich sound quality.</p>
+        </div>
+        <div class="image-box-3">
+            <img src="https://image01-in.oneplus.net/india-oneplus-statics-file/epb/202401/10/7GLKEqUAFFiO4IFY.png?x-amz-process=image/format,webp/quality,Q_80" alt="Phone Image ">
+        </div>
+    </div>
+
+    <!-- Image and Text 2 (Laptop Information) -->
+    <div class="content-3 slide-2">
+        <div class="text-box-3">
+            <h2>Discover High-Performance Laptops</h2>
+            <p>Unleash productivity with advanced laptops designed for all your needs, from gaming to professional tasks, featuring powerful hardware and sleek designs.</p>
+        </div>
+        <div class="image-box-3">
+            <img src="https://in-media.apjonlinecdn.com/catalog/product/cache/74c1057f7991b4edb2bc7bdaa94de933/c/0/c08000159_4.png" alt="Laptop Image">
+        </div>
+    </div>
+</div>
+
+
+
+<!--Video container 3-->
+<div class="video-container-3">
+    <video id="videoPlayer" autoplay muted playsinline></video>
+</div>
+
+
+<h1 style="text-align:center;margin: 20px 0; font-weight: bold; color: #FE5005;">Pods</h1>
+<div class="container">
+    <hr>
+    <div class="row">
+	    <div class="row" th:if="${productList != null}">
+	        <div class="col-md-4" th:each="product : ${productList}" th:if="${product.category.categoryId == 4}"> <!-- Filter for category ID 1 -->
+	            <!-- Wrap the card in a link to make the whole card clickable -->
+	            <a th:href="@{/customerproduct/displayproducts/{id}(id=${product.productId})}" class="text-decoration-none text-dark">
+	                <div class="card mb-4">
+	                    <div class="image-container">
+	                        <!-- Display product images with sliding effect -->
+	                        <img th:if="${product.imageUrls != null and product.imageUrls.size() > 0}"
+	                             th:each="image, iterStat : ${product.imageUrls}" 
+	                             th:src="@{${image.imageUrl}}"
+	                             th:classappend="${iterStat.index > 0} ? 'hidden' : ''"
+	                             class="card-img-top" 
+	                             alt="Product Image">
+	                    </div>
+	                    <div class="card-body">
+	                        <h5 class="card-title" th:text="${product.productName}"></h5>
+	                        <p class="card-text" th:text="${product.description} + '.........'"></p> <!-- Append ellipsis -->
+	                        <p class="card-text"><strong>Price:</strong> ₹<span th:text="${product.price}"></span></p>
+	                        <p class="card-text"><strong>Discount Price:</strong> ₹<span th:text="${product.price - (product.maxDiscount * product.price / 100)}"></span></p>
+	                        <p class="card-text"><strong>Stock-Left:</strong> <span th:text="${product.stockQuantity}"></span></p>
+	                        <p class="card-text"><strong>Category:</strong> <span th:text="${product.category.categoryName}"></span></p>
+	
+	                        <!-- Add to Cart button inside the card -->
+	                        <button class="btn btn-primary" th:onclick="'addToCart(' + ${product.productId} + ')'">Add to Cart</button>
+	                    </div>
+	                </div>
+	            </a>
+	        </div>
+	    </div>
+	</div>
+</div>
+
+<h1 style="text-align:center;margin: 20px 0; font-weight: bold; color: #FE5005;">Tabs</h1>
+<div class="container">
+    <hr>
+    <div class="row">
+	    <div class="row" th:if="${productList != null}">
+	        <div class="col-md-4" th:each="product : ${productList}" th:if="${product.category.categoryId == 3}"> <!-- Filter for category ID 1 -->
+	            <!-- Wrap the card in a link to make the whole card clickable -->
+	            <a th:href="@{/customerproduct/displayproducts/{id}(id=${product.productId})}" class="text-decoration-none text-dark">
+	                <div class="card mb-4">
+	                    <div class="image-container">
+	                        <!-- Display product images with sliding effect -->
+	                        <img th:if="${product.imageUrls != null and product.imageUrls.size() > 0}"
+	                             th:each="image, iterStat : ${product.imageUrls}" 
+	                             th:src="@{${image.imageUrl}}"
+	                             th:classappend="${iterStat.index > 0} ? 'hidden' : ''"
+	                             class="card-img-top" 
+	                             alt="Product Image">
+	                    </div>
+	                    <div class="card-body">
+	                        <h5 class="card-title" th:text="${product.productName}"></h5>
+	                        <p class="card-text" th:text="${product.description} + '.........'"></p> <!-- Append ellipsis -->
+	                        <p class="card-text"><strong>Price:</strong> ₹<span th:text="${product.price}"></span></p>
+	                        <p class="card-text"><strong>Discount Price:</strong> ₹<span th:text="${product.price - (product.maxDiscount * product.price / 100)}"></span></p>
+	                        <p class="card-text"><strong>Stock-Left:</strong> <span th:text="${product.stockQuantity}"></span></p>
+	                        <p class="card-text"><strong>Category:</strong> <span th:text="${product.category.categoryName}"></span></p>
+	
+	                        <!-- Add to Cart button inside the card -->
+	                        <button class="btn btn-primary" th:onclick="'addToCart(' + ${product.productId} + ')'">Add to Cart</button>
+	                    </div>
+	                </div>
+	            </a>
+	        </div>
+	    </div>
+	</div>
+</div>
+<!-- Our Service Section -->
+<div class="service-section">
+    <h2>Our Services</h2>
+    <div class="service-container">
+        <div class="service-box">
+            <h3>Search and Select</h3>
+            <p>Effortlessly find the products you need with our advanced search tools.</p>
+        </div>
+        <div class="service-box">
+            <h3>Buy the Product</h3>
+            <p>Purchase your selected items easily and securely through our platform.</p>
+        </div>
+        <div class="service-box">
+            <h3>All Cards are Acceptable</h3>
+            <p>We support a variety of payment methods to ensure your convenience.</p>
+        </div>
+        <div class="service-box">
+            <h3>Get Flexible Delivery</h3>
+            <p>Choose delivery options that fit your schedule and preferences.</p>
+        </div>
+        <div class="service-box">
+            <h3>24/7 Service</h3>
+            <p>Our customer service team is here to help you at any time of day.</p>
+        </div>
+        <div class="service-box">
+            <h3>Safe and Secure</h3>
+            <p>Your information is protected with top-notch security protocols.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-logo">
+            <img src="/Images/RevShop_3.png" alt="Logo">
+        </div>
+        <div class="footer-section">
+            <h4>Categories</h4>
+            <ul>
+                <li><a href="#">Electronics</a></li>
+                <li><a href="#">Clothing</a></li>
+                <li><a href="#">Toys</a></li>
+                <li><a href="#">Beauty and Grooming</a></li>
+                <li><a href="#">More Categories</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>We Deliver To</h4>
+            <ul>
+                <li><a href="#">Delhi</a></li>
+                <li><a href="#">Mumbai</a></li>
+                <li><a href="#">Jaipur</a></li>
+                <li><a href="#">Kochi</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="#">About</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Contact</h4>
+            <ul>
+                <li><a href="#">Help & Support</a></li>
+                <li><a href="#">Partner with Us</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript -->
+<script></script>
+<script>
+    // Function to show product details when the Buy Now button is clicked
+    function showProductDetails(event, element) {
+        event.stopPropagation(); // Prevent the card click event
+        const productId = element.closest('.product-card').getAttribute('data-product-id'); 
+        const productName = element.closest('.product-card').querySelector('.card-title').textContent;
+        const productDescription = element.closest('.product-card').querySelector('.card-text').textContent;
+        const productImage = element.closest('.product-card').querySelector('img').src;
+        const productPrice = '100'; // Set your price dynamically here
+
+        // Populate the product details section
+        document.getElementById('detail-image').src = productImage;
+        document.getElementById('detail-name').textContent = productName;
+        document.getElementById('detail-description').textContent = productDescription;
+        document.getElementById('detail-price').textContent = `Price: $${productPrice}`;
+
+        // Show the product details section
+        document.getElementById('product-details').style.display = 'block';
+    }
+
+    // Function to proceed to buy (You can define your own logic here)
+    function proceedToBuy() {
+        alert('Proceeding to buy the product!'); // Placeholder action
+    }
+
+    // Function to close the product details section
+    function closeDetails() {
+        document.getElementById('product-details').style.display = 'none';
+    }
+</script>
+ <script>
+        // Script for image sliding effect on hover
+        document.querySelectorAll('.image-container').forEach(function(container) {
+            const images = container.querySelectorAll('img');
+            let currentImageIndex = 0;
+
+            setInterval(function() {
+                images[currentImageIndex].classList.add('hidden');
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                images[currentImageIndex].classList.remove('hidden');
+            }, 4000);
+        });
+
+        function addToCart(productId) {
+            // Function to handle adding product to cart (can be implemented later)
+            window.location.href = '/CustomerCart/add/' + productId;
+        }
+    </script>
+<script>
+    // Image Slider Logic for first container
+let currentIndex = 0;
+const images = document.querySelectorAll('.image-slider-4 img');
+function showNextImage() {
+    images[currentIndex].classList.remove('active');
+    currentIndex = (currentIndex + 1) % images.length;
+    images[currentIndex].classList.add('active');
+}
+
+setInterval(showNextImage, 2000); // Change image every 3 seconds
+
+// Image Slider Logic for second container
+let currentIndex2 = 0;
+const images2 = document.querySelectorAll('.image-slider-2 img');
+
+function showNextImage2() {
+    images2[currentIndex2].classList.remove('active');
+    currentIndex2 = (currentIndex2 + 1) % images2.length;
+    images2[currentIndex2].classList.add('active');
+}
+
+setInterval(showNextImage2, 2000); // Change image every 3 seconds
+
+</script>
+
+<script>
+document.getElementById("mic-btn").addEventListener("click", function() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.start();
+    
+    recognition.onresult = function(event) {
+        const speechResult = event.results[0][0].transcript;
+        document.getElementById('search-input').value = speechResult;
+        searchProducts(speechResult); // Automatically search
+    };
+    
+    recognition.onerror = function(event) {
+        console.log('Error occurred in recognition: ' + event.error);
+    };
+});
+
+document.getElementById("search-btn").addEventListener("click", function() {
+    const query = document.getElementById('search-input').value;
+    searchProducts(query);
+});
+
+// Trigger search on pressing Enter
+document.getElementById("search-input").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        const query = document.getElementById('search-input').value;
+        searchProducts(query);
+    }
+});
+
+// Dummy search function
+function searchProducts(query) {
+    console.log("Searching for: " + query);
+    // Implement your search logic here
+}
+
+</script>
+
+<script>
+    const videoPlayer = document.getElementById('videoPlayer');
+    const videos = [
+        'https://images.samsung.com/in/galaxy-buds3-pro/feature/galaxy-buds3-pro-highlights01-pc.webm?imbypass=true',
+        'https://images.samsung.com/in/galaxy-buds3-pro/feature/galaxy-buds3-pro-highlights02-pc.webm?imbypass=true',
+        'https://images.samsung.com/in/galaxy-buds3-pro/feature/galaxy-buds3-pro-highlights03-pc.webm?imbypass=true',
+        'https://images.samsung.com/in/galaxy-buds3-pro/feature/galaxy-buds3-pro-highlights04-pc.webm?imbypass=true'
+    ];
+
+    let currentVideoIndex = 0;
+    let nextVideoIndex = 1;
+
+    // Function to play the current video and set up the next video
+    function playCurrentVideo() {
+        videoPlayer.src = videos[currentVideoIndex];
+        videoPlayer.play();
+
+        // Load the next video in the background
+        loadNextVideo();
+    }
+
+    // Preload the next video
+    function loadNextVideo() {
+        nextVideoIndex = (currentVideoIndex + 1) % videos.length; // Loop back to the first video
+        const nextVideo = document.createElement('video');
+        nextVideo.src = videos[nextVideoIndex];
+        nextVideo.load(); // Load the video to be ready for playback
+    }
+
+    // Function to handle video end event
+    videoPlayer.addEventListener('ended', () => {
+        // Move to the next video smoothly
+        currentVideoIndex = nextVideoIndex;
+        playCurrentVideo();
+    });
+
+    // Start playing the first video
+    playCurrentVideo();
+</script>
+  
+
+</body>
+</html>

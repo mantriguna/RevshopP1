@@ -1,0 +1,148 @@
+<script>
+	const facts = [
+		  "Why shop anywhere else when RevShop has the best deals on phones, pods, laptops, and tablets?",
+		  "At RevShop, the only thing faster than our laptop processors is how quickly our stock sells out!",
+		  "RevShop's tablet collection is so sleek, even your coffee table will feel outdated.",
+		  "Looking for a phone that can keep up with you? RevShop's got the latest and smartest options.",
+		  "RevShop's pods are so comfy, they might just become your new best friend.",
+		  "Shop at RevShop for laptops that are so fast, they’ll finish your work before you start.",
+		  "Need an upgrade? RevShop has the latest tablets that are perfect for work, play, and everything in between.",
+		  "Why did the tablet go to RevShop? To find its perfect case match!",
+		  "At RevShop, our phones come with features that will make you wonder how you lived without them.",
+		  "The latest pods at RevShop will have you dancing through checkout.",
+		  "RevShop's laptops are so advanced, they could probably code their own website.",
+		  "Looking for the best sound? RevShop has pods so good, you’ll think you’re in the studio.",
+		  "RevShop's tablets are lightweight, powerful, and ready to make your life easier.",
+		  "Need to stay connected? RevShop’s phones have battery life so long, you might forget to charge them.",
+		  "RevShop offers laptops in every color, as long as that color is 'super-fast gray.'",
+		  "Why did the phone visit RevShop? It heard about our exclusive deals on accessories!",
+		  "RevShop's pods come with noise cancellation so good, they block out everything… even your excuses!",
+		  "At RevShop, our tablets can multitask better than your morning coffee.",
+		  "Want to upgrade? RevShop's laptops are so sleek, they’ll make your desk look outdated.",
+		  "RevShop's phones have cameras so good, they capture the details you didn’t even notice.",
+		  "Why wait for the future? RevShop's tablets bring it to your hands today!",
+		  "Need a new playlist? RevShop's pods make every song sound like a live concert.",
+		  "At RevShop, the only thing outdated is our clearance section. Everything else is cutting-edge!",
+		  "Shop RevShop and get the latest tablets, perfect for your couch-lounging or office-hustling lifestyle.",
+		  "Need to work on the go? RevShop's laptops are lightweight enough to take anywhere.",
+		  "Our pods at RevShop are the best fit – not just for your ears, but for your lifestyle.",
+		  "RevShop's phones are so smart, they'll practically read your mind. Just kidding… or are we?",
+		  "RevShop's tablets are more than just screens; they're your next productivity partner.",
+		  "Got gaming in mind? RevShop's laptops will make sure you never miss a beat.",
+		  "At RevShop, our pods come with bass so deep, you'll feel every beat in your bones.",
+		  "Need a new phone? RevShop's collection has everything from basic to pro – there's a 'you' phone here!",
+		  "RevShop makes upgrading to a new laptop as easy as clicking 'Add to Cart.'",
+		  "Did you know? RevShop's pods come in every color to match your mood.",
+		  "RevShop’s tablets are built to keep up with your busy lifestyle – and your movie marathons.",
+		  "Need a power boost? RevShop's laptops come with battery life that'll keep you going all day long.",
+		  "At RevShop, we say goodbye to tangled wires – check out our wireless pods collection!",
+		  "RevShop's phones are so intuitive, they'll have you wondering how you managed before.",
+		  "With RevShop, every tablet comes with enough storage to hold your entire entertainment library.",
+		  "RevShop's laptops come with built-in security to keep your data safe and sound.",
+		  "Ever tried shopping for pods at RevShop? It’s music to your ears – literally.",
+		  "Why buy one device when RevShop has the best deals on bundles? Mix and match phones, pods, and tablets!",
+		  "RevShop's tablets are designed for both work and play. Multitasking, anyone?",
+		  "Our pods at RevShop have sound quality so clear, you'll swear the band is in the room with you.",
+		  "RevShop's laptops come with the latest processors to make lag a thing of the past.",
+		  "Why did the pod go to RevShop? To find its perfect match in sound quality!",
+		  "At RevShop, you can always find the newest phones before your friends even know they exist.",
+		  "Did you know? RevShop's tablets come with built-in stylus support for all your creative needs.",
+		  "Need more power? RevShop's laptops come equipped to handle anything from spreadsheets to gaming.",
+		  "RevShop's pods are the ideal workout buddy – they'll never miss a beat.",
+		  "Looking for a phone that takes stunning photos? RevShop's collection is just a click away!",
+		  "RevShop's tablets are so versatile, they can transform into a mini-laptop with the right accessories.",
+		  "Why did the laptop visit RevShop? It needed a software update… and a new case!",
+		  "RevShop’s phones have screens so vivid, you'll forget you're looking at a phone and not reality.",
+		  "Got a long commute? RevShop's pods will make every trip feel like a concert in your ears.",
+		  "Why wait in line? RevShop has tablets ready for delivery right to your doorstep.",
+		  "RevShop’s laptops are like a Swiss Army knife – they have every feature you could possibly need.",
+		  "Want the latest phone? RevShop's got you covered with models you won't find anywhere else.",
+		  "Need a break? RevShop’s tablets make the perfect reading companion for a relaxing evening.",
+		  "Our pods at RevShop deliver sound so immersive, you’ll forget the world around you.",
+		  "At RevShop, we believe in multitasking. That's why our laptops are designed for ultimate productivity.",
+		  "Why was the tablet excited? It heard it was getting a new home at RevShop!",
+		  "RevShop’s phones are built for selfies, so go ahead, snap away!",
+		  "Want to binge-watch your favorite series? RevShop's tablets have the battery life for it.",
+		  "With RevShop, shopping for pods is easy – and the sound quality is even easier on the ears.",
+		  "RevShop's laptops are perfect for students, professionals, and gamers alike. Versatility at its best!",
+		  "RevShop’s phones are loaded with features, including the ability to help you find more deals… at RevShop!",
+		  "Need a new look? RevShop's phone cases are as stylish as they are protective.",
+		  "RevShop’s tablets come with the latest displays, making movies and games look better than ever.",
+		  "Why did the pod visit RevShop? To find the best deal on a new charging case!",
+		  "RevShop's laptops are the perfect blend of power and portability. Perfect for life on the go.",
+		  "Our phones at RevShop have so many features, you'll be discovering new tricks every day.",
+		  "Need more storage? RevShop's tablets come with expandable memory options for all your needs.",
+		  "RevShop's pods fit so comfortably, you'll forget you're even wearing them.",
+		  "Why shop around? RevShop has the best prices on the latest phones, pods, laptops, and tablets!",
+		  "Looking for a new laptop? RevShop's got models for every need, from gaming to business.",
+		  "RevShop's phones come with top-tier cameras, perfect for capturing every moment in stunning detail.",
+		  "Our tablets at RevShop are built to last, with durable designs that stand up to everyday life.",
+		  "Need to block out distractions? RevShop's pods have noise-canceling features that make the world disappear.",
+		  "RevShop’s laptops have more power than your morning coffee. Ready to boost your productivity?",
+		  "Why did the phone choose RevShop? It wanted to find a new, loving owner – that's you!",
+		  "RevShop’s tablets are the perfect canvas for your next creative masterpiece.",
+		  "Want to listen in style? RevShop's pods come in colors to match your every mood.",
+		  "RevShop’s laptops are designed for speed – because waiting for loading screens is so last year.",
+		  "Need help picking the perfect device? RevShop's product guides have you covered.",
+		  "Why did the laptop visit RevShop? To get a software update… and a sleek new sleeve!",
+		  "RevShop’s phones are smart, fast, and feature-packed – everything you need in a tech companion.",
+		  "Shopping at RevShop is as easy as unboxing your new favorite gadget!",
+		  "Looking for a deal? RevShop's daily discounts make shopping for tablets even sweeter.",
+		  "Our pods at RevShop are wireless, effortless, and perfect for every music lover.",
+		  "Need an upgrade? RevShop’s laptops have the latest tech to keep you ahead of the game.",
+		  "At RevShop, every phone comes with a promise of quality, innovation, and endless fun!",
+		  "RevShop's tablets are designed to work hard, play hard, and keep you entertained all day.",
+		  "Why did the pod go to RevShop? To experience the ultimate sound upgrade!",
+		  "RevShop's laptops are lightweight but heavy on performance. The perfect combo!",
+		  "Need accessories? RevShop has phone cases, tablet covers, and pod chargers galore!",
+		  "RevShop’s phones are so intuitive, they know what you want before you do… almost."
+		];
+
+	
+	let currentIndex = 0;
+
+	function displayFact() {
+	    const factElement = document.getElementById('fact');
+	    factElement.textContent = facts[currentIndex];
+
+	    // Increment the index and reset if it reaches the end of the facts array
+	    
+	    currentIndex = (currentIndex + 1) % facts.length;
+	}
+
+	// Initial fact display
+	displayFact();
+
+	// Change fact every 3 seconds (3000 milliseconds)
+	setInterval(displayFact, 3000);
+	</script>
+	<style>
+	body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+.fact-container {
+    padding: 20px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    background-color: #ffffff;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s;
+}
+
+#fact {
+    font-size: 24px;
+    color: #343a40;
+}
+	
+	</style>
+	<div class="fact-container">
+        <p id="fact">Loading...</p>
+    </div>
+    <script src="script.js"></script>

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/Images/RevShop_1.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Registration Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #fe6a34;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container, .left-section, .right-section {
+            width: 20%;
+            height: 20%;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px; /* Rounded corners for the container */
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            max-width: 400px; /* Limiting max width for better appearance */
+            width: 400px;
+            margin: auto;
+            margin-top: 50px; /* Spacing from the top */
+        }
+        @media (max-width: 400px) {
+            .container {
+                width: 100%;
+                padding: 10px;
+            }
+        }
+
+        .form-control {
+            border-radius: 10px; /* Rounded corners for inputs */
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .tick-icon {
+            display: none;
+            position: absolute;
+            right: 10px;
+            top: 40%;
+            transform: translateY(-50%);
+            color: green;
+            font-size: 18px;
+        }
+
+        .error {
+            display: none;
+            color: #dc3545;
+            font-size: 12px;
+        }
+
+        .valid-feedback,
+        .invalid-feedback {
+            display: none;
+        }
+
+        .form-control.is-valid {
+            border-color: #28a745;
+        }
+
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+
+        .login-page {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .left-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .left-section img {
+            width: 80%;
+            max-width: 400px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .right-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            max-height: 100%;
+            box-sizing: border-box;
+        }
+
+        form {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 20px; /* Increased border radius for a smoother look */
+        }
+        h1 h2 {
+            color: black;
+            margin-bottom: 20px;
+        }
+
+        label {
+            color: black;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px; /* Adjusted margin for spacing */
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .error {
+            color: red; /* Error message color */
+            font-size: 0.9em;
+            display: none; /* Initially hidden */
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #FE5005; /* Updated button background color */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px; /* Added margin for spacing */
+        }
+
+        button:hover {
+            background-color: #FF8C00;
+        }
+
+        a {
+            color: black;
+            text-decoration: none;
+            display: block; /* Ensures the link takes the full width */
+            margin-top: 10px; /* Space above the link */
+            text-align: left; /* Aligns the text to the left */
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .content p {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        /* Footer section */
+        .footer {
+            text-align: center;
+            padding: 10px;
+            color: #fff;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .login-link {
+        color: #FE5005; /* Updated link color */
+        display: inline; /* Ensures that the link is inline */
+        margin-left: 5px; /* Optional: adds some space between text and link */
+        margin-top: 10px
+        }
+
+        
+    /* Bubbles container */
+.bubbles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible; /* Change this to visible */
+    z-index: 0; /* Behind the form */
+    pointer-events: none; /* Prevents bubbles from blocking mouse events */
+}
+
+.bubble {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    animation: moveBubble 10s infinite linear;
+}
+
+@keyframes moveBubble {
+    0% {
+        transform: translateY(100vh);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh);
+        opacity: 0;
+    }
+}
+
+.bubble:hover {
+    animation: hoverMove 1.5s infinite ease-in-out;
+}
+
+@keyframes hoverMove {
+    0%, 100% {
+        transform: scale(1.2) translateX(0);
+    }
+    50% {
+        transform: scale(1.2) translateX(30px);
+    }
+}
+    
+        
+    </style>
+</head>
+
+<body >
+<div class="bubbles" id="bubble-container"></div>
+    <div class="login-page">
+        <div class="left-section">
+            <div class="content">
+                <div>
+                    <h1 style=" font-size:50px; padding: 10px; vertical-align: middle; font-family: 'Protest Strike Regular 400';"><img src="/Images/RevShop_1.png" alt="Icon" style="width: 60px; height: 60px; border-radius: 5px; vertical-align: text-bottom;">&nbsp;&nbsp;<b>RevShop & Co.</b></h1></div>
+                <p>Sign up to create your personalized account and enjoy exclusive offers, faster checkout, and access to your order history.</p>
+                <img src="https://img.freepik.com/premium-photo/3d-couple-shopping-together_1035036-20750.jpg?w=1060" alt="Family Shopping">
+                <img src="https://img.freepik.com/premium-photo/happy-family-shopping-with-colorful-bags_1302551-17988.jpg?w=1060" alt="Family Shopping">
+            </div>
+        </div>
+        <script>
+    
+
+    
+            function validatePassword() {
+                var password = document.getElementById('password').value;
+                var confirmPassword = document.getElementById('confirmPassword').value;
+                var tickIconPassword = document.getElementById('tick-icon-password');
+                var tickIconConfirmPassword = document.getElementById('tick-icon-confirmPassword');
+                var errorPassword = document.getElementById('password-error');
+                var errorConfirmPassword = document.getElementById('confirmPassword-error');
+                var passwordInput = document.getElementById('password');
+                var confirmPasswordInput = document.getElementById('confirmPassword');
+    
+                // Password pattern: at least 8 characters, 1 special character, and 1 number
+                var passwordPattern = /^(?=.[0-9])(?=.[!@#$%^&])[a-zA-Z0-9!@#$%^&]{8,}$/;
+    
+                // Validate password
+                if (passwordPattern.test(password)) {
+                    passwordInput.classList.remove('is-invalid');
+                    passwordInput.classList.add('is-valid');
+                    tickIconPassword.style.display = 'inline';
+                    errorPassword.style.display = 'none';
+                } else {
+                    passwordInput.classList.remove('is-valid');
+                    passwordInput.classList.add('is-invalid');
+                    tickIconPassword.style.display = 'none';
+                    errorPassword.style.display = 'block';
+                }
+    
+                // Validate confirm password
+                if (password === confirmPassword && confirmPassword !== "") {
+                    confirmPasswordInput.classList.remove('is-invalid');
+                    confirmPasswordInput.classList.add('is-valid');
+                    tickIconConfirmPassword.style.display = 'inline';
+                    errorConfirmPassword.style.display = 'none';
+                } else {
+                    confirmPasswordInput.classList.remove('is-valid');
+                    confirmPasswordInput.classList.add('is-invalid');
+                    tickIconConfirmPassword.style.display = 'none';
+                    errorConfirmPassword.style.display = 'block';
+                }
+            }
+    
+            function sendVerificationCode() {
+                const email = document.getElementById('email').value;
+    
+                fetch("/ecom/api/send-verification/register", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({ email: email, userType: 'customer' })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        return response.text().then(text => { throw new Error(text); });
+                    }
+                })
+                .then(message => {
+                    alert(message);
+                    document.getElementById('otp-container').style.display = 'block';
+                    console.log('OTP input displayed');
+                })
+                .catch(error => {
+                    alert(error.message);
+                    console.log('Error:', error.message);
+                });
+            }
+    
+            function verifyCode() {
+            const code = document.getElementById('otpInput').value;
+            const otpErrorElement = document.getElementById('otp-verify-error');
+            const emailInput = document.getElementById('email');
+            const tickIconEmail = document.getElementById('tick-icon-email');
+            const sendOtpButton = document.getElementById('send-otp-button');
+            const registerButton = document.getElementById('registerButton');
+
+            fetch("/ecom/api/verify-code/register", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({ code: code })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("OTP verified successfully!");
+                    otpErrorElement.style.display = 'none';
+                    emailInput.classList.add('is-valid'); // Set green border for email input
+                    tickIconEmail.style.display = 'inline'; // Show green tick for email
+                    sendOtpButton.style.display = 'none'; // Hide the Send OTP button
+                    emailInput.readOnly = true; // Set email to readonly
+                    document.getElementById('otp-container').style.display = 'none'; // Hide OTP input
+
+                    // Enable Register button after OTP is verified
+                    registerButton.disabled = false;
+                } else {
+                    otpErrorElement.style.display = 'block'; // Show error message on failure
+                    throw new Error("Invalid OTP.");
+                }
+            })
+            .catch(error => {
+                alert(error.message);
+                console.log('Error:', error.message);
+            });
+        }
+    
+            function resendVerificationCode() {
+                const email = document.getElementById('email').value;
+    
+                fetch('/ecom/api/send-verification/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({ email: email, userType: 'customer' })
+                })
+                .then(response => response.text())
+                .then(message => {
+                    alert(message);
+                })
+                .catch(error => {
+                    alert('Failed to resend verification code');
+                });
+            }
+    
+            function validateEmail() {
+                var emailInput = document.getElementById('email');
+                var tickIconEmail = document.getElementById('tick-icon-email');
+                var errorEmail = document.getElementById('email-error');
+                var sendOtpButton = document.getElementById('send-otp-button');
+                var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    
+                // Validate email format
+                if (emailPattern.test(emailInput.value)) {
+                    emailInput.classList.add('is-valid'); // Set green border if valid
+                    tickIconEmail.style.display = 'inline'; // Show green tick for email
+                    errorEmail.style.display = 'none'; // Hide email error message
+                    sendOtpButton.disabled = false; // Enable the Send OTP button
+                } else {
+                    emailInput.classList.remove('is-valid'); // Remove green border if invalid
+                    tickIconEmail.style.display = 'none'; // Hide green tick for email
+                    errorEmail.style.display = 'inline'; // Show email error message
+                    sendOtpButton.disabled = true; // Disable the Send OTP button
+                }
+            }
+            function createBubble() {
+    			const bubble = document.createElement('div');
+    			bubble.classList.add('bubble');
+    			
+    			// Random size and position for each bubble
+    			const size = Math.random() * 60 + 20 + 'px';
+    			bubble.style.width = size;
+    			bubble.style.height = size;
+    			bubble.style.left = Math.random() * 100 + 'vw';
+    			bubble.style.animationDuration = Math.random() * 5 + 5 + 's';
+
+    			document.getElementById('bubble-container').appendChild(bubble);
+
+    			// Remove bubble after its animation ends
+    			setTimeout(() => {
+    				bubble.remove();
+    			}, 10000); // 10 seconds duration
+    		}
+
+    		// Create bubbles at intervals
+    		setInterval(createBubble, 200);
+    
+        </script>
+        <div class="right-section">
+        <div class="container">
+        <form th:action="@{/customer/register}" th:object="${customer}" method="post" style="z-index: 1;">
+            <h2 class="text-center">Welcome Aboard!</h2>
+                <div class="form-group">
+                
+                    <label for="name">Name</label>
+                    <input class="form-control" type="text" id="name" th:field="*{name}" required placeholder="Enter Full Name">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Invalid name.</div>
+                </div>
+    
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input class="form-control" type="email" id="email" th:field="*{email}" required placeholder="Enter Email" oninput="validateEmail()">
+                    <span id="tick-icon-email" class="tick-icon" style="display:none;">&#10004;</span>
+                    <div id="email-error" class="error"></div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Invalid email.</div>
+                    
+                    <button type="button" class="btn btn-secondary" id="send-otp-button" onclick="sendVerificationCode()" style="margin-left: 10px;" disabled>Send OTP</button>
+                </div>
+                
+                <div id="otp-container" class="form-group otp-input" style="display:none;">
+                    <label for="otpInput">Enter OTP</label>
+                    <input class="form-control" type="text" id="otpInput" placeholder="Enter OTP">
+                    <span id="tick-icon-otp" class="tick-icon" style="display:none;">&#10004;</span>
+                    <div id="otp-error" class="error">Invalid OTP!</div>
+                    <div id="otp-verify-error" class="error">The OTP you entered does not match. Please try again.</div>
+                    <button type="button" class="btn btn-secondary" onclick="verifyCode()">Verify OTP</button>
+                    <button type="button" class="btn btn-secondary" onclick="resendVerificationCode()">Resend OTP</button>
+                </div> 
+                       
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input class="form-control" type="text" id="phoneNumber" th:field="*{phoneNumber}" required pattern="\d{10}" placeholder="Enter Phone Number">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Invalid phone number.</div>
+                </div>
+    
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea class="form-control" id="address" th:field="*{address}" rows="2" required placeholder="Enter Address"></textarea>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Invalid address.</div>
+                </div>
+    
+                <div class="form-group position-relative">
+                    <label for="password">Password</label>
+                    <input class="form-control" type="password" id="password" th:field="*{password}" required placeholder="Enter Password" oninput="validatePassword()">
+                    <span id="tick-icon-password" class="tick-icon">&#10004;</span> <!-- Green tick icon -->
+                    <div id="password-error" class="error">Password must be at least 8 characters, with 1 number and 1 special character.</div>
+                </div>
+    
+                <div class="form-group position-relative">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input class="form-control" type="password" id="confirmPassword" placeholder="Confirm Password" required oninput="validatePassword()">
+                    <span id="tick-icon-confirmPassword" class="tick-icon">&#10004;</span> <!-- Green tick icon -->
+                    <div id="confirmPassword-error" class="error">Passwords do not match!</div>
+                </div>
+    
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary" id="registerButton" disabled style="margin-bottom: 10px;">Register</button>
+                </div>
+                <div class="login-container" style="text-align:center;">
+                	<p style="display: inline;">Already have an account? </p>
+                	<a th:href="@{/customer/login}" class="login-link" style="display: inline;">Login</a>
+                </div>
+                
+            </form>
+                   
+        </div>
+
+    </div>
+    
+</div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
